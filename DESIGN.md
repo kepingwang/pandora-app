@@ -1,11 +1,11 @@
 # Overall Design
 
 The Pandora game will be a web application consisting of three parts:
-1. **Player Section**: for students.
-2. **Master Section**: for game master in class.
-3. **Editor Section**: create and new games.
+1. **[Player Section](#player-section)**: for students.
+2. **[Master Section](#master-section)**: for game master in class.
+3. **[Editor Section](#editor-section)**: create and new games.
 
-## User Rights
+### User Rights
 
 All users register or login through the same portal. Users have accesses to different sections according to their user rights. By default, a user only has access to player section. The accesses to master section and editor section can be activated by access codes or email requests.
 
@@ -15,7 +15,7 @@ Users with Player right can choose to join a game session. A game session could 
 
 Users with Master right can create new games out of existing templates.
 
-## Player Section
+## <a name="player-section"></a>Player Section
 
 ### Game Session
 Once the game master has started the game with the required number of players, the session information is stored and that session will always be with those players. The game can go on only if all players and have joined the session. When a player logout or goes offline, the session is automatically paused.
@@ -39,7 +39,7 @@ In all these steps, only when all players have made decision can the game procee
 
 During all the steps, the players are always able to see the statistics and their own personalities.
 
-## Master Section
+## <a name="master-section"></a>Master Section
 
 ### Game Flow Control
 
@@ -49,7 +49,7 @@ The master can pause and resume a game. The game (optionally) automatically paus
 
 The master can see all the confirmed choices of the players, all the statistics, and all the game history.
 
-## Editor Section
+## <a name="editor-section"></a>Editor Section
 
 The editor can create a new game by editing a copy of an existing game. The editable content includes personalities, actions, names (all names can be changed easily), statistics, action effects (to some extent). But the game flow is not easily editable.
 
