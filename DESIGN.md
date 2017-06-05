@@ -46,3 +46,8 @@ The master can pause and resume a game. The game (optionally) automatically paus
 ### Game Master Interface
 
 The master can see all the confirmed choices of the players, all the statistics, and all the game history.
+
+## Editor Section
+
+The editor can create a new game by editing a copy of an existing game. The editable content includes personalities, actions, names (all names can be changed easily), statistics, action effects (to some extent). But the game flow is not easily editable.
+
