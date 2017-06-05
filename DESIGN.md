@@ -28,10 +28,10 @@ The game play user interface mainly consists of the following parts:
 4. Message board showing the current status of the game.
 
 ### Game Flow
-1. At the start of the game, players choose personalities from the tableau.
+1. At the start of the game, players choose personalities from the tableau. Players get their initial statistics (like gold, happiness, etc.).
 2. Then the game goes in rounds:  
   2.1 A event happen and players receive the information.  
-  2.2 Players choose actions.  
+  2.2 Players choose actions, which can have conditional effects on various statistics.  
   2.3 Statistics get updated and players receive the results.  
   2.4 Players adjust their personalities.  
   
