@@ -1,0 +1,35 @@
+{
+  "name": "pandora-app",
+  "version": "1.0.0",
+  "description": "pandora game web app",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kepingwang/pandora-app.git"
+  },
+  "author": "Keping Wang <kepingwang@yahoo.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/kepingwang/pandora-app/issues"
+  },
+  "homepage": "https://github.com/kepingwang/pandora-app#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "jsonwebtoken": "^7.4.1",
+    "mongodb": "^2.2.29",
+    "mongoose": "^4.10.7",
+    "morgan": "^1.8.2"
+  },
+  "devDependencies": {
+    "chokidar": "^1.7.0",
+    "concurrently": "^3.5.0",
+    "immutable": "^3.8.1",
+    "nodemon": "^1.11.0"
+  }
+}

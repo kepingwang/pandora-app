@@ -1,0 +1,1 @@
+rsync -PavzR -e "ssh -i /Users/keping/.ssh/keping-aws.pem" --exclude-from '.sync-ignore' $1 ubuntu@ec2-52-42-164-10.us-west-2.compute.amazonaws.com:/home/ubuntu/pandora-app
