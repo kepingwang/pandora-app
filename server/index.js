@@ -5,7 +5,8 @@ const database = require('./routes/database');
 const errorHanlders = require('./routes/error-handlers');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
+const HOST = '0.0.0.0';
 
 app.use(preprocessors);
 app.use(database);
@@ -17,8 +18,8 @@ app.get('*', (req, res, next) => {
 });
 app.use(errorHanlders);
 
-app.listen(port);
-console.log(`server listens at ${port}`);
+app.listen(PORT, HOST);
+console.log(`server listens at ${HOST}:${PORT}`);
 
 /*
 // =======================
@@ -146,4 +147,4 @@ settings = {
 
 const server = require('./connection/server.js').create(settings, app);
 console.log('Magic happens on ' + settings.hostname + ':' + settings.port);
-module.exports = server;*/
+module.exports = server; */
