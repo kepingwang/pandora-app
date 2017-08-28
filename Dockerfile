@@ -19,5 +19,5 @@ COPY . ./
 # build react bundle
 RUN cd client && npm run build
 
-EXPOSE 3000
+EXPOSE 80
 CMD ["pm2", "start", "--no-daemon", "npm", "--name", "PandoraApp", "--", "start"]

@@ -5,7 +5,7 @@ const database = require('./routes/database');
 const errorHanlders = require('./routes/error-handlers');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 80;
 const HOST = '0.0.0.0';
 
 app.use(preprocessors);
