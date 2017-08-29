@@ -1,13 +1,18 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Dashboard from './pages/dashboard';
-import Welcome from './pages/welcome';
+import styled from 'styled-components';
+import Dashboard from './modules/dashboard';
+import Welcome from './modules/welcome';
+
+const Wrapper = styled.div`
+  height: 100%;
+`;
 
 const App = () => (
-  <div>
+  <Wrapper>
     <Route exact path="/" component={Welcome} />
     <Route path="/dashboard" component={Dashboard} />
-  </div>
+  </Wrapper>
 );
 
 export default App;

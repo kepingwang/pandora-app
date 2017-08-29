@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/index.js",
-    "dev": "nodemon server/index.js"
+    "dev": "PORT=3002 nodemon server/index.js"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,6 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.3.0",
-    "immutable": "^3.8.1",
     "jest": "^20.0.4",
     "nodemon": "^1.11.0"
   }

@@ -1,5 +1,5 @@
 import React from 'react';
 
-const RegisterForm = () => <div>register form</div>;
+const RegisterForm = () => <div>under construction</div>;
 
 export default RegisterForm;
