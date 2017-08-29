@@ -1,5 +1,7 @@
 const path = require('path');
 const express = require('express');
+const socketIO = require('socket.io');
+const http = require('http');
 const preprocessors = require('./routes/preprocess');
 const database = require('./routes/database');
 const errorHanlders = require('./routes/error-handlers');
@@ -18,7 +20,12 @@ app.get('*', (req, res, next) => {
 });
 app.use(errorHanlders);
 
-app.listen(PORT, HOST);
+const server = http.createServer(app);
+const io = socketIO(server);
+io.on('connection', (client) => {
+  console.log(`socket io connection established ${client}`);
+});
+server.listen(PORT, HOST);
 console.log(`server listens at ${HOST}:${PORT}`);
 
 /*

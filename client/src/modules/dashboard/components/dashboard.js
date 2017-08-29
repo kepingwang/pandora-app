@@ -1,6 +1,8 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { List } from 'immutable';
+import buttonStyle from '../../../styles/button-style';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -23,25 +25,41 @@ const TextSelectARoom = styled.span`
   padding: 10px 20px;
   font-size: 16px;
 `;
+const Button = styled.button`
+  ${() => buttonStyle}
+`;
 
 const roomNames = List(['roomA', 'roomB']);
 
-const Dashboard = ({ roomName, roomInfo, selectRoom }) => (
-  <Wrapper>
-    <RoomNav>
-      {roomNames.map(name => (
-        <RoomNavItem key={name} onClick={() => selectRoom(name)}>
-          {name}
-        </RoomNavItem>
-      ))}
-    </RoomNav>
-    <RoomContentWrapper>
-      {roomName === null ?
-        <TextSelectARoom>Select A Room</TextSelectARoom>
-        : JSON.stringify(roomInfo)
-      }
-    </RoomContentWrapper>
-  </Wrapper>
-);
+const Dashboard = ({ roomName, roomInfo, selectRoom, history }) => {
+  let roomContent = <TextSelectARoom>Select A Room</TextSelectARoom>;
+  if (roomName !== null) {
+    roomContent = (
+      <div>
+        <div>
+          {roomName}
+        </div>
+        <div>{JSON.stringify(roomInfo)}</div>
+        <Button onClick={() => history.push('/game')}>Join Game</Button>
+        <Button onClick={() => history.push('/master')}>Enter As Master</Button>
+      </div>
+    );
+  }
 
-export default Dashboard;
+  return (
+    <Wrapper>
+      <RoomNav>
+        {roomNames.map(name => (
+          <RoomNavItem key={name} onClick={() => selectRoom(name)}>
+            {name}
+          </RoomNavItem>
+        ))}
+      </RoomNav>
+      <RoomContentWrapper>
+        {roomContent}
+      </RoomContentWrapper>
+    </Wrapper>
+  );
+};
+
+export default withRouter(Dashboard);
