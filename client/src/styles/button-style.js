@@ -3,6 +3,7 @@ import { css } from 'styled-components';
 const buttonStyle = css`
   background-color: #fff;
   border: none;
+  cursor: pointer;
   padding: 6px 10px;
   text-align: center;
   display: inline-block;
