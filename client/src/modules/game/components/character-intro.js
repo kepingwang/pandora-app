@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  width: 30%;
-  border-left: 1px solid #aaa;
-  border-right: 1px solid #aaa;
+  height: 100%;
 `;
 const NameText = styled.div`
   text-align: center;

@@ -3,12 +3,11 @@ import styled from 'styled-components';
 
 
 const Wrapper = styled.div`
-  width: 40%;
+  height: 100%;
 `;
 const GoalItem = styled.div`
   font-size: 16px;
-  padding: 0 20px;
-  margin-top: 20px;
+  padding: 20px 20px 0;
 `;
 const StoryItem = styled.div`
   font-size: 14px;

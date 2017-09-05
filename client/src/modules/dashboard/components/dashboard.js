@@ -11,11 +11,10 @@ const Wrapper = styled.div`
 
 const RoomNav = styled.div`
   width: 20%;
-  background-color: #aaa;
+  border-right: 1px solid #aaa;
 `;
 const RoomContentWrapper = styled.div`
   width: 80%;
-  background-color: #147;
 `;
 
 const RoomNavItem = styled.div`
@@ -27,6 +26,7 @@ const TextSelectARoom = styled.span`
 `;
 const Button = styled.button`
   ${() => buttonStyle}
+  margin: 10px;
 `;
 
 const roomNames = List(['roomA', 'roomB']);

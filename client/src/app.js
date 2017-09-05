@@ -8,6 +8,7 @@ import Master from './modules/master';
 
 const Wrapper = styled.div`
   height: 100%;
+  font-family: "SF Pro Text","Myriad Set Pro","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
 `;
 
 const App = () => (

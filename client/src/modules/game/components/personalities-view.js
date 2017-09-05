@@ -2,8 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  width: 40%;
+  height: 100%;
   display: flex;
+  padding: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
 `;
 const Col1 = styled.div`
   width: 33%;
@@ -17,13 +20,12 @@ const Col3 = styled.div`
 const Title = styled.div`
   font-size: 20px;
   color: #aaa;
-  height: 19%;
+  height: 25%;
   text-align: center;
 `;
 const Item = styled.div`
   font-size: 16px;
-  color: #a00;
-  height: 27%;
+  height: 25%;
   text-align: center;
 `;
 
@@ -42,7 +44,7 @@ const PersonalitiesView = ({ emotions, beliefs, personalities }) => (
       ))}
     </Col2>
     <Col3>
-      <Title>personalities</Title>
+      <Title>Personalities</Title>
       {personalities.map((value, idx) => (
         <Item key={idx}>{value}</Item>
       ))}
