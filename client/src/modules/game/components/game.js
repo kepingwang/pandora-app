@@ -10,6 +10,7 @@ import Stats from './stats';
 import Event from './event';
 import OtherCharacters from './other-characters';
 import PersonalitiesChooser from '../../personalities-chooser';
+import ActionChooser from '../../action-chooser';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -94,7 +95,10 @@ const Game = ({ history }) => (
         <Event event={event} />
       </MiddleLeftPane>
       <MiddleCenterPane>
-        <PersonalitiesChooser />
+        {
+          /* <PersonalitiesChooser /> */
+          <ActionChooser />
+        }
       </MiddleCenterPane>
       <MiddleRightPane>
         <OtherCharacters characters={otherCharacters} />

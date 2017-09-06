@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 import * as actions from './actions';
 
 const initialState = fromJS({
-
+  gameState: 'choosing-personalities',
 });
 
 const reducers = (state = initialState, action) => {

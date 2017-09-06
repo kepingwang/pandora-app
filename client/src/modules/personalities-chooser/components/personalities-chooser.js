@@ -59,7 +59,7 @@ const PointsItem = styled.div`
 
 const options = {
   emotions: List(['hello', 'what?', 'happy', 'sad', 'sasdf', 'abcvkljsdf', 'ablkv', 'asdnvlj', 'bvlkjewflkm', 'andsfb', 'kxcvjkls', 'xclkvn']),
-  beliefs: List(['hellasd', 'what?', 'happy', 'sad', 'sasdf', 'abcvkljsdf', 'ablkv', 'asdnvlj', 'bvlkjewflkm', 'andsfb', 'kxcvjkls', 'xclkvn']),
+  beliefs: List(['hellasd', 'what?', 'happy', 'sad', 'sasdf', 'abcvkljsdf', 'ablkv', 'asdnvlj', 'bvlkjewflkm', 'andsfb', 'kxcvjkls', 'xclkvn', 'aklcvjkljadf', 'acvlkajsdfklsdfio2ef', 'asdvolj']),
 };
 
 const TOTAL_INTENSITY_POINTS = 10;
