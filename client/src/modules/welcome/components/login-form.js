@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
-import buttonStyle from '../../styles/button-style';
-import newId from '../../utils/new-id';
+import buttonStyle from '../../../styles/button-style';
+import newId from '../../../utils/new-id';
 
 
 const Form = styled.form`
@@ -56,12 +56,18 @@ class LoginForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.history.push('/dashboard');
+    const { email, password } = this.state;
+    this.props.login(email, password);
   }
 
   render() {
     return (
       <Form onSubmit={e => this.handleSubmit(e)}>
+        {
+          this.props.loginMessage
+            ? <div>{this.props.loginMessage}</div>
+            : null
+        }
         <FormItem>
           <label htmlFor={this.emailId}>
             <LabelText>
@@ -89,7 +95,7 @@ class LoginForm extends Component {
           </label>
         </FormItem>
         <SubmitFormItem>
-          <SubmitInput type="submit" value="Submit" />
+          <SubmitInput type="submit" value="Login" />
         </SubmitFormItem>
       </Form>
     );

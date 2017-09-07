@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import Welcome from './modules/welcome';
 import Dashboard from './modules/dashboard';
@@ -11,13 +12,25 @@ const Wrapper = styled.div`
   font-family: "SF Pro Text","Myriad Set Pro","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
 `;
 
-const App = () => (
+const App = ({ loggedIn }) => (
   <Wrapper>
-    <Route exact path="/" component={Welcome} />
+    <Route
+      exact
+      path="/"
+      render={() => (
+        loggedIn
+          ? <Redirect to="/dashboard" />
+          : <Welcome />
+      )}
+    />
     <Route path="/dashboard" component={Dashboard} />
     <Route path="/game" component={Game} />
     <Route path="/master" component={Master} />
   </Wrapper>
 );
 
-export default App;
+const mapStateToProps = state => ({
+  loggedIn: state.welcome.get('loggedIn'),
+});
+
+export default withRouter(connect(mapStateToProps, null)(App));

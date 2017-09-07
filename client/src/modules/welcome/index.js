@@ -1,25 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
-import LoginRegisterBox from './login-register-box';
+import { connect } from 'react-redux';
+import Welcome from './components/welcome';
+import * as actions from './actions';
 
-const Wrapper = styled.div`
-  height: 600px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-const WelcomeTitle = styled.h1`
-  display: inline-block;
-`;
+const mapStateToProps = state => ({
+  signupMessage: state.welcome.get('signupMessage'),
+  loginMessage: state.welcome.get('loginMessage'),
+});
 
-const Welcome = () => (
-  <Wrapper>
-    <WelcomeTitle>
-      Welcome to Pandora Game
-    </WelcomeTitle>
-    <LoginRegisterBox />
-  </Wrapper>
-);
+const mapDispatchToProps = dispatch => ({
+  signup: (email, username, password) => {
+    dispatch(actions.signup(email, username, password));
+  },
+  login: (email, password) => {
+    dispatch(actions.login(email, password));
+  },
+});
 
-export default Welcome;
+export default connect(mapStateToProps, mapDispatchToProps)(Welcome);

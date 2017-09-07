@@ -1,9 +1,11 @@
 const router = require('express').Router();
-const logger = require('morgan');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 
-router.use(logger('dev'));
+router.use(morgan('dev'));
+router.use(cookieParser());
 router.use(bodyParser.json()); // parse application/json
 router.use(bodyParser.json({
   type: 'application/vnd.api+json',
