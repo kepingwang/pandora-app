@@ -8,9 +8,9 @@ RUN npm i -g pm2
 
 # install dependencies packages first to utilize docker layer caching
 # COPY dest path could be relative to WORKDIR, or absolute. dest dir must end with /
-COPY package.json package-lock.json ./
+COPY package.json ./
 RUN npm install
-COPY client/package.json client/package-lock.json client/
+COPY client/package.json client/
 RUN cd client && npm install
 
 # copy everything to filesystem of container
