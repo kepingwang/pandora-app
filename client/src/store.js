@@ -5,6 +5,7 @@ import dashboardSagas from './modules/dashboard/sagas';
 import welcomeReducers from './modules/welcome/reducers';
 import welcomeSagas from './modules/welcome/sagas';
 import gameReducers from './modules/game/reducers';
+import gameSagas from './modules/game/sagas';
 
 const reducers = combineReducers({
   dashboard: dashboardReducers,
@@ -24,5 +25,6 @@ const store = createStore(reducers, composeEnhancers(
 
 sagaMiddleware.run(dashboardSagas);
 sagaMiddleware.run(welcomeSagas);
+sagaMiddleware.run(gameSagas);
 
 export default store;

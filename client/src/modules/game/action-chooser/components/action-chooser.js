@@ -66,6 +66,13 @@ class ActionChooser extends Component {
     });
   }
 
+  handleSubmit() {
+    this.props.submitAction({
+      actionName: this.state.actionChosen,
+      scope: this.state.scope,
+    });
+  }
+
   render() {
     let numCoins = 4;
     if (this.state.scope === 'community') {
@@ -91,7 +98,7 @@ class ActionChooser extends Component {
             <ActionItem
               selected={this.state.scope === 'global'}
               onClick={() => this.setState({ scope: 'global' })}
-            >private</ActionItem>
+            >global</ActionItem>
           </ScopeChooser>
           <div>
             {`cost ${numCoins} positive coins`}
@@ -121,7 +128,10 @@ class ActionChooser extends Component {
           {actionInfo}
         </Description>
         <SubmitItem>
-          <SubmitButton disabled={this.state.actionChosen === null}>
+          <SubmitButton
+            disabled={this.state.actionChosen === null}
+            onClick={() => this.handleSubmit()}
+          >
             Submit
           </SubmitButton>
         </SubmitItem>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { List, Map } from 'immutable';
@@ -9,8 +9,8 @@ import PersonalitiesView from './personalities-view';
 import Stats from './stats';
 import Event from './event';
 import OtherCharacters from './other-characters';
-import PersonalitiesChooser from '../../personalities-chooser';
-import ActionChooser from '../../action-chooser';
+import PersonalitiesChooser from '../personalities-chooser';
+import ActionChooser from '../action-chooser';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -67,12 +67,12 @@ const emotions = List(['happy', 'sad', 'happier']);
 const beliefs = List(['nationalism', 'socialism', 'science']);
 const personalities = List(['brave', 'cautious', 'stupid']);
 
-const stats = Map({
+const statsDefault = Map({
   tension: 20,
   violence: 30,
   affluence: 30,
   influence: 30,
-  wellBeing: 30,
+  wellbeing: 30,
   coinsPositive: 20,
   coinsNeutral: 5,
   coinsNegative: 10,
@@ -83,38 +83,55 @@ const event = Map({
 });
 const otherCharacters = List(['Lilian', 'John', 'Tommy']);
 
-const Game = ({ characterName, setCharacterName }) => (
-  <Wrapper>
-    <TopPane>
-      <NavBar exit={() => setCharacterName(null)} />
-    </TopPane>
-    <MiddlePane>
-      <MiddleLeftPane>
-        <Stats stats={stats} />
-        <Event event={event} />
-      </MiddleLeftPane>
-      <MiddleCenterPane>
-        {
-          /* <PersonalitiesChooser /> */
-          <ActionChooser />
-        }
-      </MiddleCenterPane>
-      <MiddleRightPane>
-        <OtherCharacters characters={otherCharacters} />
-      </MiddleRightPane>
-    </MiddlePane>
-    <BottomPane>
-      <BottomLeftPane>
-        <GoalAndStory goal={goal} story={story} />
-      </BottomLeftPane>
-      <BottomCenterPane>
-        <CharacterIntro name={characterName || 'Keping'} intro={characterIntro} />
-      </BottomCenterPane>
-      <BottomRightPane>
-        <PersonalitiesView {...{ emotions, beliefs, personalities }} />
-      </BottomRightPane>
-    </BottomPane>
-  </Wrapper>
-);
+class Game extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidMount() {
+    const { updateStats } = this.props;
+    updateStats();
+  }
+
+  render() {
+    const { stats, characterName, setCharacterName } = this.props;
+    return (
+      <Wrapper>
+        <TopPane>
+          <NavBar exit={() => setCharacterName(null)} />
+        </TopPane>
+        <MiddlePane>
+          <MiddleLeftPane>
+            <button onClick={() => this.props.updateStats()}>updateStats</button>
+            <Stats stats={statsDefault.merge(stats)} />
+            <Event event={event} />
+          </MiddleLeftPane>
+          <MiddleCenterPane>
+            {
+              /* <PersonalitiesChooser /> */
+              <ActionChooser />
+            }
+          </MiddleCenterPane>
+          <MiddleRightPane>
+            <OtherCharacters characters={otherCharacters} />
+          </MiddleRightPane>
+        </MiddlePane>
+        <BottomPane>
+          <BottomLeftPane>
+            <GoalAndStory goal={goal} story={story} />
+          </BottomLeftPane>
+          <BottomCenterPane>
+            <CharacterIntro name={characterName || 'Keping'} intro={characterIntro} />
+          </BottomCenterPane>
+          <BottomRightPane>
+            <PersonalitiesView {...{ emotions, beliefs, personalities }} />
+          </BottomRightPane>
+        </BottomPane>
+      </Wrapper>
+    );
+  }
+}
+
 
 export default withRouter(Game);

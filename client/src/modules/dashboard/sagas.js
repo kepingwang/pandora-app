@@ -1,7 +1,19 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import * as actions from './actions';
 import * as requests from '../../requests';
-import { setCharacterName } from '../game/actions';
+import { setCharacterName, updateStats } from '../game/actions';
+
+
+function* handleRetrieveUserRoomCharacter() {
+  const res = yield call(requests.getUserRoomCharacter);
+  const body = yield res.json();
+  if (res.status !== 200) {
+    console.log(body);
+  }
+  yield put(actions.setRoomName(body.roomName));
+  yield put(setCharacterName(body.characterName));
+  yield put(updateStats());
+}
 
 function* handleRetrieveRooms() {
   const res = yield call(requests.getRooms);
@@ -10,7 +22,8 @@ function* handleRetrieveRooms() {
 }
 
 function* handleSelectRoom(action) {
-  const res = yield call(requests.getRoomInfo, action.roomName);
+  const { roomName } = action;
+  const res = yield call(requests.getRoomInfo, { roomName });
   const body = yield res.json();
   if (res.status === 200) {
     yield put(actions.setRoomInfo(body));
@@ -31,6 +44,7 @@ function* handleJoinRoom(action) {
 }
 
 function* sagas() {
+  yield takeLatest(actions.RETRIEVE_USER_ROOM_CHARACTER, handleRetrieveUserRoomCharacter);
   yield takeLatest(actions.RETRIEVE_ROOMS, handleRetrieveRooms);
   yield takeLatest(actions.SELECT_ROOM, handleSelectRoom);
   yield takeLatest(actions.JOIN_ROOM, handleJoinRoom);

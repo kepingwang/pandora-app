@@ -43,9 +43,31 @@ function setApiRoutes(app, passport) {
     });
   });
 
+  app.post('/api/get-user-room-character', (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({ message: 'not logged in' });
+    }
+    return db.get({
+      TableName: 'UserInfo',
+      Key: { email: req.user.email },
+    }, (err, data) => {
+      if (data.Item) {
+        return res.json({
+          roomName: data.Item.roomName,
+          characterName: data.Item.characterName,
+        });
+      }
+      return res.json({
+        roomName: null,
+        characterName: null,
+      });
+    });
+  });
+
   app.post('/api/get-room-info',
     isLoggedIn,
     (req, res) => {
+      console.log(req.body);
       db.get({
         TableName: 'PandoraRooms',
         Key: { roomName: req.body.roomName },
@@ -68,10 +90,7 @@ function setApiRoutes(app, passport) {
         if (err) return res.error(err);
         const character = data.Item.characters.find(ch => ch.characterName === characterName);
         if (!character) return res.status(400).json({ message: 'Character does not exist.' });
-        if (character.email) {
-          if (character.email === req.user.email) {
-            return res.json({ message: 'Join success - already joined.' });
-          }
+        if (character.email && character.email !== req.user.email) {
           return res.status(400).json({ message: 'Character already taken by another player.' });
         }
         const joinedCharacter = data.Item.characters.find(ch => ch.email === req.user.email);
@@ -80,14 +99,81 @@ function setApiRoutes(app, passport) {
         }
         character.email = req.user.email;
         console.log(data.Item.characters);
-        db.put({
+        return db.put({
           TableName: 'PandoraRooms',
           Item: data.Item,
         }, (e1, d1) => {
-          console.log(e1);
-          console.log(d1);
-          return res.json({ message: 'Join success.' });
+          return db.update({
+            TableName: 'UserInfo',
+            Key: { email: req.user.email },
+            UpdateExpression: 'SET roomName = :r, characterName = :c',
+            ExpressionAttributeValues: {
+              ':r': roomName,
+              ':c': characterName,
+            },
+          }, (e2, d2) => {
+            res.json({ message: 'join room success' });
+          });
         });
+      });
+    });
+
+  app.post('/api/get-stats',
+    isLoggedIn,
+    (req, res) => {
+      console.log(req.user);
+      console.log(req.body);
+      // TODO: verifies email, roomName, and characterName
+      // if (!req.user) res.status(401).json({ message: 'you are not authorized' });
+      const { roomName, characterName } = req.body;
+      console.log(`${roomName}:${characterName}`);
+      db.get({
+        TableName: 'PandoraRooms',
+        Key: { roomName: `${roomName}:${characterName}` },
+      }, (err, data) => {
+        if (data.Item) {
+          return res.json({ stats: data.Item.stats });
+        }
+        return res.json({ message: 'data not found' });
+      });
+    });
+
+  app.post('/api/submit-action',
+    isLoggedIn,
+    (req, res) => {
+      const { roomName, characterName, actionName, scope } = req.body;
+      db.get({
+        TableName: 'PandoraRooms',
+        Key: { roomName: `${roomName}:${characterName}` },
+      }, (err, data) => {
+        if (data.Item) {
+          const stats = data.Item.stats;
+          let changeNumber = 1;
+          if (scope === 'private') {
+            changeNumber = 1;
+          } else if (scope === 'community') {
+            changeNumber = 2;
+          } else if (scope === 'global') {
+            changeNumber = 3;
+          }
+          stats.affluence += changeNumber;
+          stats.influence += changeNumber;
+          stats.wellbeing += changeNumber;
+          if (!stats.history) {
+            stats.history = [];
+          }
+          stats.history.push({ actionName, scope });
+          console.log(data.Item);
+          return db.put({
+            TableName: 'PandoraRooms',
+            Item: data.Item,
+          }, (e1, d1) => {
+            console.log(e1);
+            console.log(d1);
+            return res.json({ message: 'data updated' });
+          });
+        }
+        return res.json({ message: 'data not found' });
       });
     });
 

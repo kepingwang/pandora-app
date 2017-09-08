@@ -33,3 +33,8 @@ export const SET_JOIN_ROOM_MESSAGE = 'dashboard/set-join-room-message';
 export const setJoinRoomMessage = message => ({
   type: SET_JOIN_ROOM_MESSAGE, message,
 });
+
+export const RETRIEVE_USER_ROOM_CHARACTER = 'dashboard/retrieve-user-room-character';
+export const retrieveUserRoomCharacter = () => ({
+  type: RETRIEVE_USER_ROOM_CHARACTER,
+});

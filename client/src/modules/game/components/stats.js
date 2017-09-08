@@ -20,7 +20,7 @@ const Stats = ({ stats }) => (
     <Spacing />
     <Item>Affluence: {stats.get('affluence')}</Item>
     <Item>Influence: {stats.get('influence')}</Item>
-    <Item>Well-Being: {stats.get('wellBeing')}</Item>
+    <Item>Well-Being: {stats.get('wellbeing')}</Item>
     <Spacing />
     <Item>Positive Coins: {stats.get('coinsPositive')}</Item>
     <Item>Neutral Coins: {stats.get('coinsNeutral')}</Item>

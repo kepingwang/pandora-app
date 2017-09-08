@@ -1,39 +1,32 @@
 
-export const signup = (email, username, password) =>
-  fetch('/api/signup', {
+const request = (url, payload) =>
+  fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({ email, username, password }),
+    body: JSON.stringify(payload),
   });
 
-export const login = (email, password) =>
-  fetch('/api/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-    credentials: 'include',
-  });
+export const signup = ({ email, username, password }) =>
+  request('/api/signup', { email, username, password });
+
+export const login = ({ email, password }) =>
+  request('/api/login', { email, password });
 
 export const getRooms = () =>
-  fetch('/api/get-rooms', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-  });
+  request('/api/get-rooms', {});
 
-export const getRoomInfo = roomName =>
-  fetch('/api/get-room-info', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ roomName }),
-    credentials: 'include',
-  });
+export const getRoomInfo = ({ roomName }) =>
+  request('/api/get-room-info', { roomName });
 
 export const joinRoom = ({ roomName, characterName }) =>
-  fetch('/api/join-room', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ roomName, characterName }),
-    credentials: 'include',
-  });
+  request('/api/join-room', { roomName, characterName });
+
+export const getStats = ({ characterName, roomName }) =>
+  request('/api/get-stats', { characterName, roomName });
+
+export const submitAction = ({ roomName, characterName, actionName, scope }) =>
+  request('/api/submit-action', { roomName, characterName, actionName, scope });
+
+export const getUserRoomCharacter = () =>
+  request('/api/get-user-room-character', {});
