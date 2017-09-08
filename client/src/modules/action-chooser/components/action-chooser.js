@@ -28,6 +28,10 @@ const Description = styled.div`
   text-align: center;
   margin: 20px 10px;
 `;
+const ScopeChooser = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 const SubmitItem = styled.div`
   display: flex;
   justify-content: center;
@@ -52,6 +56,7 @@ class ActionChooser extends Component {
     super(props);
     this.state = {
       actionChosen: null,
+      scope: 'private',
     };
   }
 
@@ -62,6 +67,40 @@ class ActionChooser extends Component {
   }
 
   render() {
+    let numCoins = 4;
+    if (this.state.scope === 'community') {
+      numCoins = 6;
+    } else if (this.state.scope === 'global') {
+      numCoins = 12;
+    }
+
+    let actionInfo = 'No action is chosen.';
+    if (this.state.actionChosen !== null) {
+      actionInfo = (
+        <div>
+          <div>{`Action chosen: ${this.state.actionChosen}`}</div>
+          <ScopeChooser>
+            <ActionItem
+              selected={this.state.scope === 'private'}
+              onClick={() => this.setState({ scope: 'private' })}
+            >private</ActionItem>
+            <ActionItem
+              selected={this.state.scope === 'community'}
+              onClick={() => this.setState({ scope: 'community' })}
+            >community</ActionItem>
+            <ActionItem
+              selected={this.state.scope === 'global'}
+              onClick={() => this.setState({ scope: 'global' })}
+            >private</ActionItem>
+          </ScopeChooser>
+          <div>
+            {`cost ${numCoins} positive coins`}
+          </div>
+        </div>
+      );
+    }
+
+
     return (
       <Wrapper>
         <Title>Action Chooser</Title>
@@ -79,9 +118,7 @@ class ActionChooser extends Component {
           ))}
         </ActionsBox>
         <Description>
-          {this.state.actionChosen === null
-            ? 'No action is chosen.'
-            : `Action chosen: ${this.state.actionChosen}`}
+          {actionInfo}
         </Description>
         <SubmitItem>
           <SubmitButton disabled={this.state.actionChosen === null}>
