@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   font-family: "SF Pro Text","Myriad Set Pro","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
 `;
 
-const App = ({ loggedIn }) => (
+const App = ({ loggedIn, characterName }) => (
   <Wrapper>
     <Route
       exact
@@ -23,7 +23,15 @@ const App = ({ loggedIn }) => (
           : <Welcome />
       )}
     />
-    <Route path="/dashboard" component={Dashboard} />
+    {/* !loggedIn ? <Redirect to="/" /> : null */}
+    <Route
+      path="/dashboard"
+      render={() => (
+        characterName
+          ? <Redirect to="/game" />
+          : <Dashboard />
+      )}
+    />
     <Route path="/game" component={Game} />
     <Route path="/master" component={Master} />
   </Wrapper>
@@ -31,6 +39,7 @@ const App = ({ loggedIn }) => (
 
 const mapStateToProps = state => ({
   loggedIn: state.welcome.get('loggedIn'),
+  characterName: state.game.get('characterName'),
 });
 
 export default withRouter(connect(mapStateToProps, null)(App));

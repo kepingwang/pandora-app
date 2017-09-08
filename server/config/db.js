@@ -5,4 +5,6 @@ AWS.config.update({
   endpoint: 'https://dynamodb.us-east-1.amazonaws.com',
 });
 
-module.exports = AWS.DynamoDB;
+const docClient = new AWS.DynamoDB.DocumentClient();
+
+module.exports = docClient;

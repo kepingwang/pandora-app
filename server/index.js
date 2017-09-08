@@ -7,9 +7,8 @@ const passport = require('passport');
 
 const configurePassport = require('./config/passport');
 const preprocessors = require('./routes/preprocess');
-const database = require('./routes/database');
+const setApiRoutes = require('./routes/apis');
 const errorHanlders = require('./routes/error-handlers');
-const setApiRoutes = require('./apis/index');
 
 const app = express();
 const PORT = process.env.PORT || 80;
@@ -20,7 +19,6 @@ configurePassport(passport);
 app.use(session({ secret: 'iamkepingwanghello' }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(database);
 app.use(express.static(path.join(__dirname, '../client/build')));
 setApiRoutes(app, passport);
 app.get('*', (req, res, next) => {

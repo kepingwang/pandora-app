@@ -62,7 +62,6 @@ const BottomRightPane = styled.div`
 
 const goal = 'Be a good programmer';
 const story = 'I grew up in China...';
-const characterName = 'Keping';
 const characterIntro = 'Programmer';
 const emotions = List(['happy', 'sad', 'happier']);
 const beliefs = List(['nationalism', 'socialism', 'science']);
@@ -84,10 +83,10 @@ const event = Map({
 });
 const otherCharacters = List(['Lilian', 'John', 'Tommy']);
 
-const Game = ({ history }) => (
+const Game = ({ characterName, setCharacterName }) => (
   <Wrapper>
     <TopPane>
-      <NavBar exit={() => history.push('/dashboard')} />
+      <NavBar exit={() => setCharacterName(null)} />
     </TopPane>
     <MiddlePane>
       <MiddleLeftPane>
@@ -109,7 +108,7 @@ const Game = ({ history }) => (
         <GoalAndStory goal={goal} story={story} />
       </BottomLeftPane>
       <BottomCenterPane>
-        <CharacterIntro name={characterName} intro={characterIntro} />
+        <CharacterIntro name={characterName || 'Keping'} intro={characterIntro} />
       </BottomCenterPane>
       <BottomRightPane>
         <PersonalitiesView {...{ emotions, beliefs, personalities }} />

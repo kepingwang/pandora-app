@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { List } from 'immutable';
 import buttonStyle from '../../../styles/button-style';
 
 const Wrapper = styled.div`
@@ -15,51 +14,96 @@ const RoomNav = styled.div`
 `;
 const RoomContentWrapper = styled.div`
   width: 80%;
+  padding: 20px 20px;
 `;
 
 const RoomNavItem = styled.div`
-  padding: 2px 0 4px;
+  padding: 0 10px;
+  margin: 10px 0;
+  user-select: none;
+  cursor: pointer;
 `;
-const TextSelectARoom = styled.span`
-  padding: 10px 20px;
+const TextSelectARoom = styled.div`
   font-size: 16px;
 `;
 const Button = styled.button`
   ${() => buttonStyle}
-  margin: 10px;
+  margin: 10px 10px;
 `;
 
-const roomNames = List(['roomA', 'roomB']);
-
-const Dashboard = ({ roomName, roomInfo, selectRoom, history }) => {
-  let roomContent = <TextSelectARoom>Select A Room</TextSelectARoom>;
-  if (roomName !== null) {
-    roomContent = (
-      <div>
-        <div>
-          {roomName}
-        </div>
-        <div>{JSON.stringify(roomInfo)}</div>
-        <Button onClick={() => history.push('/game')}>Join Game</Button>
-        <Button onClick={() => history.push('/master')}>Enter As Master</Button>
-      </div>
-    );
+class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      characterName: null,
+    };
   }
 
-  return (
-    <Wrapper>
-      <RoomNav>
-        {roomNames.map(name => (
-          <RoomNavItem key={name} onClick={() => selectRoom(name)}>
-            {name}
-          </RoomNavItem>
-        ))}
-      </RoomNav>
-      <RoomContentWrapper>
-        {roomContent}
-      </RoomContentWrapper>
-    </Wrapper>
-  );
-};
+  componentDidMount() {
+    this.props.retrieveRooms();
+  }
+
+  handleCharacterNameChange(event) {
+    this.setState({
+      characterName: event.target.value,
+    });
+  }
+
+  render() {
+    const { rooms, roomName, roomInfo, selectRoom, history, joinRoomMessage } = this.props;
+    let roomContent = <TextSelectARoom>Select A Room</TextSelectARoom>;
+    if (roomName !== null) {
+      roomContent = (
+        <div>
+          <div>
+            {roomName}
+          </div>
+          <div>{JSON.stringify(roomInfo)}</div>
+          <div>
+            <label htmlFor={this.emailId}>
+              character:
+              <input
+                id={this.emailId}
+                type="text"
+                value={this.state.email}
+                onChange={e => this.handleCharacterNameChange(e)}
+              />
+            </label>
+            <Button onClick={() => this.props.joinRoom(roomName, this.state.characterName)}>
+              Join Game
+            </Button>
+            {joinRoomMessage
+              ? <div>{joinRoomMessage}</div>
+              : null}
+          </div>
+          <div>
+            <Button onClick={() => history.push('/master')}>
+              Enter As Master
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <Wrapper>
+        <RoomNav>
+          {rooms.map(room => (
+            <RoomNavItem
+              key={room.get('roomName')}
+              onClick={() => selectRoom(room.get('roomName'))}
+            >
+              {room.get('roomName')}
+            </RoomNavItem>
+          ))}
+        </RoomNav>
+        <RoomContentWrapper>
+          {roomContent}
+        </RoomContentWrapper>
+      </Wrapper>
+    );
+  }
+}
+
 
 export default withRouter(Dashboard);

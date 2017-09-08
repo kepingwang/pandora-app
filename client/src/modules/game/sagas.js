@@ -10,7 +10,7 @@ function* handleSelectRoom(action) {
 }
 
 function* sagas() {
-  yield takeLatest(actions.SELECT_ROOM, handleSelectRoom);
+
 }
 
 export default sagas;

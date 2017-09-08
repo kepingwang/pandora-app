@@ -4,11 +4,12 @@ import dashboardReducers from './modules/dashboard/reducers';
 import dashboardSagas from './modules/dashboard/sagas';
 import welcomeReducers from './modules/welcome/reducers';
 import welcomeSagas from './modules/welcome/sagas';
-
+import gameReducers from './modules/game/reducers';
 
 const reducers = combineReducers({
   dashboard: dashboardReducers,
   welcome: welcomeReducers,
+  game: gameReducers,
 });
 
 const sagaMiddleware = createSagaMiddleware();
