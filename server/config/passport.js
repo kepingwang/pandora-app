@@ -8,7 +8,17 @@ function configurePassport(passport) {
   });
 
   passport.deserializeUser((email, done) => {
-    done(null, { email }); // TODO: retrieve more user info by email
+    db.get({
+      TableName: 'UserInfo',
+      Key: { email },
+    }, (err, data) => {
+      if (err) return done(err);
+      return done(null, {
+        email: data.Item.email,
+        username: data.Item.username,
+        admin: data.Item.admin,
+      });
+    });
   });
 
   passport.use('local-signup', new LocalStrategy({
@@ -51,7 +61,7 @@ function configurePassport(passport) {
       if (!bcrypt.compareSync(password, data.Item.hashedPassword)) {
         return done(null, false, { message: 'Wrong password!' });
       }
-      return done(null, { email: data.Item.email });
+      return done(null, { email });
     });
   }));
 }

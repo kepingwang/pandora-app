@@ -7,8 +7,9 @@ const passport = require('passport');
 
 const configurePassport = require('./config/passport');
 const preprocessors = require('./routes/preprocess');
-const setApiRoutes = require('./routes/apis');
+const setAuthRoutes = require('./routes/set-auth-routes');
 const errorHanlders = require('./routes/error-handlers');
+const apis = require('./routes/apis');
 
 const app = express();
 const PORT = process.env.PORT || 80;
@@ -20,7 +21,8 @@ app.use(session({ secret: 'iamkepingwanghello' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, '../client/build')));
-setApiRoutes(app, passport);
+setAuthRoutes(app, passport);
+app.use(apis);
 app.get('*', (req, res, next) => {
   const err = new Error('Page Not Found. Sorry :(');
   err.status = 404;
