@@ -1,7 +1,7 @@
 
-export const RETRIEVE_ROOMS = 'dashboard/retrieve-rooms';
-export const retrieveRooms = () => ({
-  type: RETRIEVE_ROOMS,
+export const FETCH_ROOMS = 'dashboard/fetch-rooms';
+export const fetchRooms = () => ({
+  type: FETCH_ROOMS,
 });
 
 export const SET_ROOMS = 'dashboard/set-rooms';
@@ -14,27 +14,12 @@ export const selectRoom = roomName => ({
   type: SELECT_ROOM, roomName,
 });
 
-export const SET_ROOM_NAME = 'dashboard/set-room-name';
-export const setRoomName = roomName => ({
-  type: SET_ROOM_NAME, roomName,
-});
-
 export const SET_ROOM_INFO = 'dashboard/set-room-info';
-export const setRoomInfo = roomInfo => ({
-  type: SET_ROOM_INFO, roomInfo,
-});
-
-export const JOIN_ROOM = 'dashboard/join-room';
-export const joinRoom = (roomName, characterName) => ({
-  type: JOIN_ROOM, roomName, characterName,
+export const setRoomInfo = ({ roomName, characters }) => ({
+  type: SET_ROOM_INFO, roomName, characters,
 });
 
 export const SET_JOIN_ROOM_MESSAGE = 'dashboard/set-join-room-message';
 export const setJoinRoomMessage = message => ({
   type: SET_JOIN_ROOM_MESSAGE, message,
-});
-
-export const RETRIEVE_USER_ROOM_CHARACTER = 'dashboard/retrieve-user-room-character';
-export const retrieveUserRoomCharacter = () => ({
-  type: RETRIEVE_USER_ROOM_CHARACTER,
 });

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { List, Map } from 'immutable';
-import NavBar from './nav-bar';
+import NavBar from '../../common/nav-bar';
 import GoalAndStory from './goal-and-story';
 import CharacterIntro from './character-intro';
 import PersonalitiesView from './personalities-view';
@@ -16,7 +15,6 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 const TopPane = styled.div`
-  height: 30px;
 `;
 const MiddlePane = styled.div`
   height: calc(100% - 190px);
@@ -95,11 +93,16 @@ class Game extends Component {
   }
 
   render() {
-    const { stats, characterName, setCharacterName } = this.props;
+    const { stats, characterName, exitRoom, logout } = this.props;
     return (
       <Wrapper>
         <TopPane>
-          <NavBar exit={() => setCharacterName(null)} />
+          <NavBar
+            buttons={[
+              { name: 'Dashboard', onClick: () => exitRoom() },
+              { name: 'Logout', onClick: () => logout() },
+            ]}
+          />
         </TopPane>
         <MiddlePane>
           <MiddleLeftPane>
@@ -134,4 +137,4 @@ class Game extends Component {
 }
 
 
-export default withRouter(Game);
+export default Game;

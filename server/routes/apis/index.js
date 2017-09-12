@@ -1,6 +1,40 @@
 const router = require('express').Router();
 const db = require('../../config/db');
-const { isLoggedIn, isAdmin } = require('../auth-middlewares');
+const masterRouter = require('./master');
+const { isLoggedIn } = require('../auth-middlewares');
+
+router.post('/api/is-logged-in',
+  (req, res) => {
+    res.json({
+      result: req.isAuthenticated(),
+    });
+  });
+
+router.post('/api/get-user-info',
+  isLoggedIn,
+  (req, res, next) => {
+    db.get({
+      TableName: 'UserInfo',
+      Key: { email: req.user.email },
+    }, (err, data) => {
+      if (err) next(err);
+      const { email, username, master, roomName, characterName } = data.Item;
+      res.json({ email, username, master, roomName, characterName });
+    });
+  });
+
+router.post('/api/exit-room',
+  isLoggedIn,
+  (req, res, next) => {
+    db.update({
+      TableName: 'UserInfo',
+      Key: { email: req.user.email },
+      UpdateExpression: 'REMOVE roomName, characterName',
+    }, (err) => {
+      if (err) return next(err);
+      return res.json({ message: 'exit room success' });
+    });
+  });
 
 router.post('/api/get-rooms',
   isLoggedIn,
@@ -154,4 +188,5 @@ router.post('/api/submit-action',
     });
   });
 
+router.use(masterRouter);
 module.exports = router;

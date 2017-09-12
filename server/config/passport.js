@@ -16,7 +16,7 @@ function configurePassport(passport) {
       return done(null, {
         email: data.Item.email,
         username: data.Item.username,
-        admin: data.Item.admin,
+        master: data.Item.master,
       });
     });
   });

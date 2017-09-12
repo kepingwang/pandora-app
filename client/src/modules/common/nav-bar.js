@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  height: 100%;
+  height: 30px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -19,14 +19,17 @@ const Button = styled.div`
   display: inline-block;
   font-size: 14px;
   color: #fff;
+  user-select: 'none';
   &:hover {
     opacity: 0.65;
   }
 `;
 
-const NavBar = ({ exit }) => (
+const NavBar = ({ buttons }) => (
   <Wrapper>
-    <Button onClick={exit}>Exit</Button>
+    {buttons.map(({ name, onClick }, idx) => (
+      <Button key={idx} onClick={onClick}>{name}</Button>
+    ))}
   </Wrapper>
 );
 

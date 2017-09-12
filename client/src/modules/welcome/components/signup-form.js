@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
 import buttonStyle from '../../../styles/button-style';
 import newId from '../../../utils/new-id';
 
@@ -124,4 +123,4 @@ class LoginForm extends Component {
 
 }
 
-export default withRouter(LoginForm);
+export default LoginForm;

@@ -2,25 +2,25 @@ import { fromJS } from 'immutable';
 import * as actions from './actions';
 
 const initialState = fromJS({
-  rooms: [],
+  loading: true,
+  email: null,
+  username: null,
+  master: null,
   roomName: null,
-  roomCharacters: null,
-  joinRoomMessage: null,
+  characterName: null,
 });
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
-    case actions.SET_ROOMS:
+    case actions.SET_USER_INFO:
       return state.merge({
-        rooms: action.rooms,
-      });
-    case actions.SET_ROOM_INFO:
-      return state.merge({
+        loading: false,
+        email: action.email,
+        username: action.username,
+        master: action.master,
         roomName: action.roomName,
-        roomCharacters: action.roomCharacters,
+        characterName: action.characterName,
       });
-    case actions.SET_JOIN_ROOM_MESSAGE:
-      return state.set('joinRoomMessage', action.message);
     default:
       return state;
   }

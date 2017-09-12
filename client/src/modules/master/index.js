@@ -1,11 +1,19 @@
 import { connect } from 'react-redux';
-import Master from './components/master';
-import * as actions from './actions';
+import { withRouter } from 'react-router-dom';
+import Master from './master';
+import * as appActions from '../app/actions';
+
 
 const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  exitRoom: () => {
+    dispatch(appActions.exitRoom());
+  },
+  logout: () => {
+    dispatch(appActions.logout());
+  },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Master);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Master));

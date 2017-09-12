@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Plus from '../../../icons/plus-white';
-import Minus from '../../../icons/minus-white';
+import Plus from '../../../common/icons/plus-white';
+import Minus from '../../../common/icons/minus-white';
 
 const Wrapper = styled.div`
   margin-top: 3px;

@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import buttonStyle from '../../../styles/button-style';
+import NavBar from '../common/nav-bar';
+import buttonStyle from '../../styles/button-style';
 
 const Wrapper = styled.div`
   height: 100%;
+`;
+
+const Content = styled.div`
+  height: calc(100% - 30px);
   display: flex;
 `;
 
@@ -40,7 +44,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    this.props.retrieveRooms();
+    this.props.fetchRooms();
   }
 
   handleCharacterNameChange(event) {
@@ -50,7 +54,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { rooms, roomName, roomInfo, selectRoom, history, joinRoomMessage } = this.props;
+    const { rooms, roomName, roomCharacters, selectRoom, joinRoomMessage, logout } = this.props;
     let roomContent = <TextSelectARoom>Select A Room</TextSelectARoom>;
     if (roomName !== null) {
       roomContent = (
@@ -58,7 +62,7 @@ class Dashboard extends Component {
           <div>
             {roomName}
           </div>
-          <div>{JSON.stringify(roomInfo)}</div>
+          <div>{JSON.stringify(roomCharacters)}</div>
           <div>
             <label htmlFor={this.emailId}>
               character:
@@ -76,34 +80,36 @@ class Dashboard extends Component {
               ? <div>{joinRoomMessage}</div>
               : null}
           </div>
-          <div>
-            <Button onClick={() => history.push('/master')}>
-              Enter As Master
-            </Button>
-          </div>
         </div>
       );
     }
 
     return (
       <Wrapper>
-        <RoomNav>
-          {rooms.map(room => (
-            <RoomNavItem
-              key={room.get('roomName')}
-              onClick={() => selectRoom(room.get('roomName'))}
-            >
-              {room.get('roomName')}
-            </RoomNavItem>
-          ))}
-        </RoomNav>
-        <RoomContentWrapper>
-          {roomContent}
-        </RoomContentWrapper>
+        <NavBar
+          buttons={[
+            { name: 'Logout', onClick: () => logout() },
+          ]}
+        />
+        <Content>
+          <RoomNav>
+            {rooms.map(room => (
+              <RoomNavItem
+                key={room.get('roomName')}
+                onClick={() => selectRoom(room.get('roomName'))}
+              >
+                {room.get('roomName')}
+              </RoomNavItem>
+            ))}
+          </RoomNav>
+          <RoomContentWrapper>
+            {roomContent}
+          </RoomContentWrapper>
+        </Content>
       </Wrapper>
     );
   }
 }
 
 
-export default withRouter(Dashboard);
+export default Dashboard;

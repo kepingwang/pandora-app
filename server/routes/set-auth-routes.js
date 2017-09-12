@@ -24,11 +24,11 @@ function setAuthRoutes(app, passport) {
       })(req, res, next);
     });
 
-  /*
-    app.post('/api/logout', (req, res) => {
+  app.post('/api/logout',
+    (req, res) => {
       req.logout(); // provided by passport
+      res.json({ message: 'logout success' });
     });
-  */
 }
 
 module.exports = setAuthRoutes;

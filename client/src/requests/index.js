@@ -13,6 +13,18 @@ export const signup = ({ email, username, password }) =>
 export const login = ({ email, password }) =>
   request('/api/login', { email, password });
 
+export const logout = () =>
+  request('/api/logout', {});
+
+export const isLoggedIn = () =>
+  request('/api/is-logged-in', {});
+
+export const getUserInfo = () =>
+  request('/api/get-user-info', {});
+
+export const exitRoom = () =>
+  request('/api/exit-room', {});
+
 export const getRooms = () =>
   request('/api/get-rooms', {});
 
@@ -21,6 +33,9 @@ export const getRoomInfo = ({ roomName }) =>
 
 export const joinRoom = ({ roomName, characterName }) =>
   request('/api/join-room', { roomName, characterName });
+
+export const masterJoinRoom = ({ roomName }) =>
+  request('/api/master/join-room', { roomName });
 
 export const getStats = ({ characterName, roomName }) =>
   request('/api/get-stats', { characterName, roomName });

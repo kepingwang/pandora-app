@@ -1,24 +1,28 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import Dashboard from './components/dashboard';
+import Dashboard from './dashboard';
 import * as actions from './actions';
+import * as appActions from '../app/actions';
 
 const mapStateToProps = state => ({
   rooms: state.dashboard.get('rooms'),
   roomName: state.dashboard.get('roomName'),
-  roomInfo: state.dashboard.get('roomInfo'),
+  roomCharacters: state.dashboard.get('roomCharacters'),
   joinRoomMessage: state.dashboard.get('joinRoomMessage'),
 });
 
 const mapDispatchToProps = dispatch => ({
-  retrieveRooms: () => {
-    dispatch(actions.retrieveRooms());
+  fetchRooms: () => {
+    dispatch(actions.fetchRooms());
   },
   selectRoom: (roomName) => {
     dispatch(actions.selectRoom(roomName));
   },
   joinRoom: (roomName, characterName) => {
-    dispatch(actions.joinRoom(roomName, characterName));
+    dispatch(appActions.joinRoom(roomName, characterName));
+  },
+  logout: () => {
+    dispatch(appActions.logout());
   },
 });
 

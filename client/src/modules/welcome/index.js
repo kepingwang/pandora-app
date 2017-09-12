@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Welcome from './components/welcome';
-import * as actions from './actions';
+import * as appActions from '../app/actions';
 
 const mapStateToProps = state => ({
   signupMessage: state.welcome.get('signupMessage'),
@@ -9,11 +10,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   signup: (email, username, password) => {
-    dispatch(actions.signup(email, username, password));
+    dispatch(appActions.signup(email, username, password));
   },
   login: (email, password) => {
-    dispatch(actions.login(email, password));
+    dispatch(appActions.login(email, password));
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Welcome);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Welcome));
