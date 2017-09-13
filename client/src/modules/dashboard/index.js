@@ -7,6 +7,7 @@ import * as appActions from '../app/actions';
 const mapStateToProps = state => ({
   rooms: state.dashboard.get('rooms'),
   roomName: state.dashboard.get('roomName'),
+  roomDescription: state.dashboard.get('roomDescription'),
   roomCharacters: state.dashboard.get('roomCharacters'),
   joinRoomMessage: state.dashboard.get('joinRoomMessage'),
 });
@@ -15,11 +16,11 @@ const mapDispatchToProps = dispatch => ({
   fetchRooms: () => {
     dispatch(actions.fetchRooms());
   },
-  selectRoom: (roomName) => {
-    dispatch(actions.selectRoom(roomName));
+  selectRoom: ({ roomName }) => {
+    dispatch(actions.selectRoom({ roomName }));
   },
-  joinRoom: (roomName, characterName) => {
-    dispatch(appActions.joinRoom(roomName, characterName));
+  joinRoom: ({ roomName, characterName, token }) => {
+    dispatch(appActions.joinRoom({ roomName, characterName, token }));
   },
   logout: () => {
     dispatch(appActions.logout());

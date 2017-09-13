@@ -31,8 +31,8 @@ export const getRooms = () =>
 export const getRoomInfo = ({ roomName }) =>
   request('/api/get-room-info', { roomName });
 
-export const joinRoom = ({ roomName, characterName }) =>
-  request('/api/join-room', { roomName, characterName });
+export const joinRoom = ({ roomName, characterName, token }) =>
+  request('/api/join-room', { roomName, characterName, token });
 
 export const masterJoinRoom = ({ roomName }) =>
   request('/api/master/join-room', { roomName });

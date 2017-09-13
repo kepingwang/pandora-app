@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import LoginForm from './login-form';
-import SignupForm from './signup-form';
+import Form from '../common/form';
 
 const Wrapper = styled.div`
   height: 600px;
@@ -65,10 +64,36 @@ class Welcome extends Component {
               Register
           </Nav>
           </NavBar>
-          {
-            this.state.registering
-              ? <SignupForm {...{ signup, signupMessage }} />
-              : <LoginForm {...{ login, loginMessage }} />
+          {this.state.registering
+            ? (
+              <Form
+                key={1}
+                message={signupMessage}
+                fields={[
+                  { name: 'email' },
+                  { name: 'username' },
+                  { name: 'password', type: 'password' },
+                ]}
+                button={{
+                  name: 'Signup',
+                  submit: signup,
+                }}
+              />
+            )
+            : (
+              <Form
+                key={2}
+                message={loginMessage}
+                fields={[
+                  { name: 'email' },
+                  { name: 'password', type: 'password' },
+                ]}
+                button={{
+                  name: 'Login',
+                  submit: login,
+                }}
+              />
+            )
           }
         </BoxWrapper>
       </Wrapper>

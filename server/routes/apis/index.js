@@ -44,25 +44,7 @@ router.post('/api/get-rooms',
       ProjectionExpression: 'roomName',
     }, (err, data) => {
       if (err) return next(err);
-      return res.json(data.Items);
-    });
-  });
-
-router.post('/api/get-user-room-character',
-  isLoggedIn,
-  (req, res, next) => {
-    db.get({
-      TableName: 'UserInfo',
-      Key: { email: req.user.email },
-    }, (err, data) => {
-      if (err) return next(err);
-      if (!data.Item) {
-        return res.status(400).json({ message: 'user not found' });
-      }
-      return res.json({
-        roomName: data.Item.roomName,
-        characterName: data.Item.characterName,
-      });
+      return res.json(data.Items.map(item => item.roomName));
     });
   });
 
@@ -74,6 +56,11 @@ router.post('/api/get-room-info',
       Key: { roomName: req.body.roomName },
     }, (err, data) => {
       if (err) return next(err);
+      const item = data.Item;
+      item.characters = data.Item.characters.map(ch => ({
+        characterName: ch.characterName,
+        email: ch.email,
+      }));
       return res.json(data.Item);
     });
   });
@@ -103,6 +90,10 @@ router.post('/api/join-room',
 
       if (joinedCharacter && joinedCharacter.characterName !== req.body.characterName) {
         return res.status(400).json({ message: 'You already joined the game as another character.' });
+      }
+
+      if (!joinedCharacter && character.token && character.token !== req.body.token) {
+        return res.status(401).json({ message: 'Wrong token!' });
       }
 
       character.email = req.user.email;

@@ -4,6 +4,10 @@ import * as welcomeActions from '../welcome/actions';
 import * as dashboardActions from '../dashboard/actions';
 import * as requests from '../../requests';
 
+
+const getMaster = state => state.app.get('master');
+const getRoomName = state => state.dashboard.get('roomName');
+
 function* handleFetchUserInfo() {
   const isLoggedInRes = yield call(requests.isLoggedIn);
   const isLoggedIn = yield isLoggedInRes.json();
@@ -48,27 +52,29 @@ function* handleLogout() {
   yield put(actions.fetchUserInfo());
 }
 
-const getMaster = state => state.app.get('master');
-
-function* handleJoinRoom({ roomName, characterName }) {
+function* handleJoinRoom({ roomName, characterName, token }) {
   const master = yield select(getMaster);
   let res = null;
   if (master) {
     res = yield call(requests.masterJoinRoom, { roomName });
   } else {
-    res = yield call(requests.joinRoom, { roomName, characterName });
+    res = yield call(requests.joinRoom, { roomName, characterName, token });
   }
   const body = yield res.json();
   if (res.status === 200) {
+    yield put(dashboardActions.setJoinRoomMessage({ message: null }));
     yield put(actions.fetchUserInfo());
   } else {
-    yield put(dashboardActions.setJoinRoomMessage(body.message));
+    yield put(dashboardActions.selectRoom({ roomName }));
+    yield put(dashboardActions.setJoinRoomMessage({ message: body.message }));
   }
 }
 
 function* handleExitRoom() {
   yield call(requests.exitRoom);
   yield put(actions.fetchUserInfo());
+  const roomName = yield select(getRoomName);
+  yield put(dashboardActions.selectRoom({ roomName }));
 }
 
 function* sagas() {

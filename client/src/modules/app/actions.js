@@ -12,12 +12,12 @@ export const setUserInfo =
   });
 
 export const SIGNUP = 'app/signup';
-export const signup = (email, username, password) => ({
+export const signup = ({ email, username, password }) => ({
   type: SIGNUP, email, username, password,
 });
 
 export const LOGIN = 'app/login';
-export const login = (email, password) => ({
+export const login = ({ email, password }) => ({
   type: LOGIN, email, password,
 });
 
@@ -27,8 +27,8 @@ export const logout = () => ({
 });
 
 export const JOIN_ROOM = 'app/join-room';
-export const joinRoom = (roomName, characterName) => ({
-  type: JOIN_ROOM, roomName, characterName,
+export const joinRoom = ({ roomName, characterName, token }) => ({
+  type: JOIN_ROOM, roomName, characterName, token,
 });
 
 export const EXIT_ROOM = 'app/exit-room';

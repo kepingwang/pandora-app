@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { List } from 'immutable';
 import NavBar from '../common/nav-bar';
-import buttonStyle from '../../styles/button-style';
+import Form from '../common/form';
+import Table from '../common/table';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -22,64 +24,64 @@ const RoomContentWrapper = styled.div`
 `;
 
 const RoomNavItem = styled.div`
-  padding: 0 10px;
-  margin: 10px 0;
+  padding: 10px 20px;
   user-select: none;
   cursor: pointer;
+  border-bottom: 1px solid #ccc;
+  :hover {
+    box-shadow: inset 0 0 3px 1px;
+  }
 `;
+
 const TextSelectARoom = styled.div`
   font-size: 16px;
 `;
-const Button = styled.button`
-  ${() => buttonStyle}
-  margin: 10px 10px;
+
+const RoomNameTitle = styled.h2`
+  text-align: center;
+`;
+const RoomDescription = styled.h4`
+  text-align: center;
 `;
 
 class Dashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      characterName: null,
-    };
-  }
 
   componentDidMount() {
     this.props.fetchRooms();
   }
 
-  handleCharacterNameChange(event) {
-    this.setState({
-      characterName: event.target.value,
-    });
-  }
-
   render() {
-    const { rooms, roomName, roomCharacters, selectRoom, joinRoomMessage, logout } = this.props;
+    const { rooms, roomName, roomDescription, roomCharacters,
+      selectRoom, joinRoomMessage, logout, joinRoom } = this.props;
+
     let roomContent = <TextSelectARoom>Select A Room</TextSelectARoom>;
     if (roomName !== null) {
       roomContent = (
         <div>
-          <div>
-            {roomName}
-          </div>
-          <div>{JSON.stringify(roomCharacters)}</div>
-          <div>
-            <label htmlFor={this.emailId}>
-              character:
-              <input
-                id={this.emailId}
-                type="text"
-                value={this.state.email}
-                onChange={e => this.handleCharacterNameChange(e)}
-              />
-            </label>
-            <Button onClick={() => this.props.joinRoom(roomName, this.state.characterName)}>
-              Join Game
-            </Button>
-            {joinRoomMessage
-              ? <div>{joinRoomMessage}</div>
-              : null}
-          </div>
+          <RoomNameTitle>{roomName}</RoomNameTitle>
+          <RoomDescription>{roomDescription}</RoomDescription>
+          <Table
+            headers={['character', 'player']}
+            data={roomCharacters.map(ch => (
+              List([ch.get('characterName'), ch.get('email')])
+            ))}
+          />
+          <Form
+            message={joinRoomMessage}
+            fields={[
+              { name: 'character' },
+              { name: 'token' },
+            ]}
+            button={{
+              name: 'Join Game',
+              submit: ({ character, token }) =>
+                joinRoom({
+                  roomName,
+                  characterName: character,
+                  token,
+                }),
+            }}
+          />
         </div>
       );
     }
@@ -93,12 +95,14 @@ class Dashboard extends Component {
         />
         <Content>
           <RoomNav>
-            {rooms.map(room => (
+            {rooms.map((room, idx) => (
               <RoomNavItem
-                key={room.get('roomName')}
-                onClick={() => selectRoom(room.get('roomName'))}
+                key={room}
+                onClick={() => selectRoom({ roomName: room })}
+                hasTopShadow={idx === 0}
+                hasBottomShadow={idx === rooms.length}
               >
-                {room.get('roomName')}
+                {room}
               </RoomNavItem>
             ))}
           </RoomNav>

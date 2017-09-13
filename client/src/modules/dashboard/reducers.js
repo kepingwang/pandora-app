@@ -4,6 +4,7 @@ import * as actions from './actions';
 const initialState = fromJS({
   rooms: [],
   roomName: null,
+  roomDescription: null,
   roomCharacters: null,
   joinRoomMessage: null,
 });
@@ -17,7 +18,8 @@ const reducers = (state = initialState, action) => {
     case actions.SET_ROOM_INFO:
       return state.merge({
         roomName: action.roomName,
-        roomCharacters: action.roomCharacters,
+        roomCharacters: action.characters,
+        roomDescription: action.description,
       });
     case actions.SET_JOIN_ROOM_MESSAGE:
       return state.set('joinRoomMessage', action.message);
