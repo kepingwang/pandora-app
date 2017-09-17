@@ -1,17 +1,10 @@
 const router = require('express').Router();
-const db = require('../../config/db');
+const db = require('../database/client');
 const masterRouter = require('./master');
-const { isLoggedIn } = require('../auth-middlewares');
-
-router.post('/api/is-logged-in',
-  (req, res) => {
-    res.json({
-      result: req.isAuthenticated(),
-    });
-  });
+const validateLogin = require('./auth').validateLogin;
 
 router.post('/api/get-user-info',
-  isLoggedIn,
+  validateLogin,
   (req, res, next) => {
     db.get({
       TableName: 'UserInfo',
@@ -24,7 +17,7 @@ router.post('/api/get-user-info',
   });
 
 router.post('/api/exit-room',
-  isLoggedIn,
+  validateLogin,
   (req, res, next) => {
     db.update({
       TableName: 'UserInfo',
@@ -37,7 +30,7 @@ router.post('/api/exit-room',
   });
 
 router.post('/api/get-rooms',
-  isLoggedIn,
+  validateLogin,
   (req, res, next) => {
     db.scan({
       TableName: 'PandoraRooms',
@@ -49,7 +42,7 @@ router.post('/api/get-rooms',
   });
 
 router.post('/api/get-room-info',
-  isLoggedIn,
+  validateLogin,
   (req, res, next) => {
     db.get({
       TableName: 'PandoraRooms',
@@ -66,7 +59,7 @@ router.post('/api/get-room-info',
   });
 
 router.post('/api/join-room',
-  isLoggedIn,
+  validateLogin,
   (req, res, next) => {
     db.get({
       TableName: 'PandoraRooms',
@@ -122,7 +115,7 @@ router.post('/api/join-room',
   });
 
 router.post('/api/get-stats',
-  isLoggedIn,
+  validateLogin,
   (req, res, next) => {
     const { roomName, characterName } = req.body;
     // TODO: verify email roomName characterName
@@ -139,7 +132,7 @@ router.post('/api/get-stats',
   });
 
 router.post('/api/submit-action',
-  isLoggedIn,
+  validateLogin,
   (req, res, next) => {
     const { roomName, characterName, actionName, scope } = req.body;
     db.get({

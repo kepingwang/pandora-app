@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const db = require('../../config/db');
-const { isMaster } = require('../auth-middlewares');
+const db = require('../database/client');
+const validateMaster = require('./auth').validateMaster;
 
 router.post('/api/master/join-room',
-  isMaster,
+  validateMaster,
   (req, res, next) => {
     db.update({
       TableName: 'UserInfo',
@@ -19,7 +19,7 @@ router.post('/api/master/join-room',
   });
 
 router.post('/api/master/full-room-info',
-  isMaster,
+  validateMaster,
   (req, res) => {
     res.json({
       message: 'dummy data',

@@ -28,7 +28,11 @@ const RoomNavItem = styled.div`
   user-select: none;
   cursor: pointer;
   border-bottom: 1px solid #ccc;
+  color: ${props => (props.selected ? '#000' : '#aaa')};
   :hover {
+    color: #000;
+  }
+  :active {
     box-shadow: inset 0 0 3px 1px;
   }
 `;
@@ -70,7 +74,7 @@ class Dashboard extends Component {
             message={joinRoomMessage}
             fields={[
               { name: 'character' },
-              { name: 'token' },
+              { name: 'token', type: 'password' },
             ]}
             button={{
               name: 'Join Game',
@@ -95,12 +99,11 @@ class Dashboard extends Component {
         />
         <Content>
           <RoomNav>
-            {rooms.map((room, idx) => (
+            {rooms.map(room => (
               <RoomNavItem
                 key={room}
                 onClick={() => selectRoom({ roomName: room })}
-                hasTopShadow={idx === 0}
-                hasBottomShadow={idx === rooms.length}
+                selected={room === roomName}
               >
                 {room}
               </RoomNavItem>
