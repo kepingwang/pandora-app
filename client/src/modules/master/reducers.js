@@ -3,7 +3,6 @@ import * as actions from './actions';
 
 const initialState = fromJS({
   status: 'actions',
-  stats: {},
 });
 
 const reducers = (state = initialState, action) => {

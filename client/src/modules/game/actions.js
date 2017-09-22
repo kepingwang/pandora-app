@@ -1,17 +1,12 @@
 
-export const SET_CHARACTER_NAME = 'game/set-character-name';
-export const setCharacterName = characterName => ({
-  type: SET_CHARACTER_NAME, characterName,
+export const SYNC_GAME_INFO = 'game/sync-game-info';
+export const syncGameInfo = () => ({
+  type: SYNC_GAME_INFO,
 });
 
-export const UPDATE_STATS = 'game/update-stats';
-export const updateStats = () => ({
-  type: UPDATE_STATS,
-});
-
-export const SET_STATS = 'game/set-stats';
-export const setStats = stats => ({
-  type: SET_STATS, stats,
+export const SET_GAME_INFO = 'game/set-game-info';
+export const setGameInfo = ({ status }) => ({
+  type: SET_GAME_INFO, status,
 });
 
 export const SUBMIT_ACTION = 'action-chooser/submit-action';

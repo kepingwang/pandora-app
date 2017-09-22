@@ -1,33 +1,10 @@
 const router = require('express').Router();
-const AWS = require('aws-sdk');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../database/client');
-
-const COOKIE_NAME = 'pandora-token';
-let jwtSecret = null;
-
-const fetchJwtSecret = () =>
-  new Promise((resolve, reject) => {
-    if (jwtSecret) {
-      return resolve(jwtSecret);
-    }
-    const s3 = new AWS.S3();
-    return s3.getObject({
-      Bucket: 'secret.kepingwang.com',
-      Key: 'pandora-app/pandora-app-jwt-secret.txt',
-    }).promise()
-      .then((data) => {
-        jwtSecret = data.Body.toString('utf-8');
-        resolve(jwtSecret);
-      })
-      .catch(err => reject(err));
-  });
-
-/* eslint-disable no-console */
-fetchJwtSecret().then().catch(err => console.log(err));
-/* eslint-enable */
+const fetchJwtSecret = require('../config/jwt-secret');
+const COOKIE_NAME = require('../config/cookie-name');
 
 const generateToken = (email, master) =>
   fetchJwtSecret()

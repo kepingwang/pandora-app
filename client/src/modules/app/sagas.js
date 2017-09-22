@@ -3,7 +3,7 @@ import * as actions from './actions';
 import * as welcomeActions from '../welcome/actions';
 import * as dashboardActions from '../dashboard/actions';
 import * as requests from '../../requests';
-
+import socket from '../../socket';
 
 const getMaster = state => state.app.get('master');
 const getRoomName = state => state.dashboard.get('roomName');
@@ -13,6 +13,7 @@ function* handleFetchUserInfo() {
   const isLoggedIn = yield isLoggedInRes.json();
   if (!isLoggedIn.result) {
     yield put(actions.setUserInfo({}));
+    socket.disconnect();
     return;
   }
   const userInfoRes = yield call(requests.getUserInfo);
@@ -23,6 +24,11 @@ function* handleFetchUserInfo() {
   yield put(actions.setUserInfo({
     email, username, master, roomName, characterName,
   }));
+  if (roomName) {
+    socket.connect();
+  } else {
+    socket.disconnect();
+  }
 }
 
 function* handleSignup({ email, username, password }) {
@@ -65,7 +71,6 @@ function* handleJoinRoom({ roomName, characterName, token }) {
     yield put(dashboardActions.setJoinRoomMessage({ message: null }));
     yield put(actions.fetchUserInfo());
   } else {
-    yield put(dashboardActions.selectRoom({ roomName }));
     yield put(dashboardActions.setJoinRoomMessage({ message: body.message }));
   }
 }

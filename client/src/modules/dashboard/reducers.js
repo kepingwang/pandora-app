@@ -15,7 +15,7 @@ const reducers = (state = initialState, action) => {
       return state.merge({
         rooms: action.rooms,
       });
-    case actions.SET_ROOM_INFO:
+    case actions.SET_ROOM_INTRO:
       return state.merge({
         roomName: action.roomName,
         roomCharacters: action.characters,

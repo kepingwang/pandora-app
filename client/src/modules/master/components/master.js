@@ -14,18 +14,18 @@ const Content = styled.div`
 `;
 
 const TopPane = styled.div`
-  height: calc(100% - 200px);
+  height: calc(100% - 250px);
   min-height: 200px;
   border-bottom: 1px solid #aaa;
   display: flex;
 `;
 const MiddlePane = styled.div`
-  height: 120px;
+  height: 150px;
   border-left: 0.5px solid #aaa;
   border-right: 0.5px solid #aaa;
 `;
 const BottomPane = styled.div`
-  height: 80px;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,8 +39,12 @@ const Button = styled.button`
 
 class Master extends Component {
 
+  componentDidMount() {
+    this.props.syncGameInfo();
+  }
+
   render() {
-    const { exitRoom, logout } = this.props;
+    const { exitRoom, logout, status, updateGameStatus } = this.props;
     return (
       <Wrapper>
         <NavBar
@@ -60,8 +64,15 @@ class Master extends Component {
             <WorldStats />
           </MiddlePane>
           <BottomPane>
+            <div>status: {status}</div>
             <Button>Stop</Button>
             <Button>Resume</Button>
+            <Button onClick={() => updateGameStatus('actions')}>
+              Actions
+            </Button>
+            <Button onClick={() => updateGameStatus('personalities')}>
+              Personalities
+            </Button>
           </BottomPane>
         </Content>
       </Wrapper>

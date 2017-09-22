@@ -2,31 +2,33 @@ import { select, call, put, takeLatest } from 'redux-saga/effects';
 import * as actions from './actions';
 import * as requests from '../../requests';
 
-const getCharacterName = state => state.app.get('characterName');
+const getStatus = state => state.master.get('status');
 const getRoomName = state => state.app.get('roomName');
 
 function* handleSyncGameInfo() {
-  const characterName = yield select(getCharacterName);
   const roomName = yield select(getRoomName);
-  const res = yield call(requests.getGameInfo, { roomName, characterName });
+  const res = yield call(requests.masterGetGameInfo, { roomName });
   const { status } = yield res.json();
   yield put(actions.setGameInfo({
     status,
   }));
 }
 
-function* handleSubmitAction(action) {
-  const characterName = yield select(getCharacterName);
+function* handleUpdateGameStatus(action) {
+  const status = action.status;
+  const currStatus = yield select(getStatus);
+  if (status === currStatus) {
+    return;
+  }
   const roomName = yield select(getRoomName);
-  const { actionName, scope } = action;
-  const res = yield call(requests.submitAction, { roomName, characterName, actionName, scope });
-  const body = yield res.json();
+  yield call(requests.masterUpdateGameStatus, { roomName, status });
   yield put(actions.syncGameInfo());
 }
 
+
 function* sagas() {
   yield takeLatest(actions.SYNC_GAME_INFO, handleSyncGameInfo);
-  yield takeLatest(actions.SUBMIT_ACTION, handleSubmitAction);
+  yield takeLatest(actions.UPDATE_GAME_STATUS, handleUpdateGameStatus);
 }
 
 export default sagas;

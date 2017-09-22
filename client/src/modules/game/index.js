@@ -5,13 +5,14 @@ import * as actions from './actions';
 import { exitRoom, logout } from '../app/actions';
 
 const mapStateToProps = state => ({
+  status: state.game.get('status'),
   characterName: state.app.get('characterName'),
   stats: state.game.get('stats'),
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateStats: () => {
-    dispatch(actions.updateStats());
+  syncGameInfo: () => {
+    dispatch(actions.syncGameInfo());
   },
   exitRoom: () => {
     dispatch(exitRoom());

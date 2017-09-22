@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import store from './store';
 import App from './modules/app';
 import registerServiceWorker from './utils/registerServiceWorker';
-import runSocket from './run-socket';
 
 ReactDOM.render((
   <Provider store={store}>
@@ -17,4 +16,3 @@ ReactDOM.render((
   document.getElementById('root'),
 );
 registerServiceWorker();
-runSocket();

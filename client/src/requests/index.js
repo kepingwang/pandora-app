@@ -37,11 +37,14 @@ export const joinRoom = ({ roomName, characterName, token }) =>
 export const masterJoinRoom = ({ roomName }) =>
   request('/api/master/join-room', { roomName });
 
-export const getStats = ({ characterName, roomName }) =>
-  request('/api/get-stats', { characterName, roomName });
+export const masterGetGameInfo = ({ roomName }) =>
+  request('/api/master/get-game-info', { roomName });
+
+export const masterUpdateGameStatus = ({ roomName, status }) =>
+  request('/api/master/update-game-status', { roomName, status });
+
+export const getGameInfo = ({ roomName, characterName }) =>
+  request('/api/game/get-game-info', { roomName, characterName });
 
 export const submitAction = ({ roomName, characterName, actionName, scope }) =>
-  request('/api/submit-action', { roomName, characterName, actionName, scope });
-
-export const getUserRoomCharacter = () =>
-  request('/api/get-user-room-character', {});
+  request('/api/game/submit-action', { roomName, characterName, actionName, scope });

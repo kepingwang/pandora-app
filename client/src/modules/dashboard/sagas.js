@@ -13,8 +13,8 @@ function* handleSelectRoom({ roomName }) {
     return;
   }
   const res = yield call(requests.getRoomInfo, { roomName });
-  const body = yield res.json();
-  yield put(actions.setRoomInfo(body));
+  const { description, characters } = yield res.json();
+  yield put(actions.setRoomIntro({ roomName, description, characters }));
 }
 
 function* sagas() {

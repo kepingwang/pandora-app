@@ -82,18 +82,13 @@ const event = Map({
 const otherCharacters = List(['Lilian', 'John', 'Tommy']);
 
 class Game extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
 
   componentDidMount() {
-    const { updateStats } = this.props;
-    updateStats();
+    this.props.syncGameInfo();
   }
 
   render() {
-    const { stats, characterName, exitRoom, logout } = this.props;
+    const { status, stats, characterName, exitRoom, logout } = this.props;
     return (
       <Wrapper>
         <TopPane>
@@ -106,14 +101,14 @@ class Game extends Component {
         </TopPane>
         <MiddlePane>
           <MiddleLeftPane>
-            <button onClick={() => this.props.updateStats()}>updateStats</button>
             <Stats stats={statsDefault.merge(stats)} />
             <Event event={event} />
           </MiddleLeftPane>
           <MiddleCenterPane>
             {
-              /* <PersonalitiesChooser /> */
-              <ActionChooser />
+              status === 'personalities'
+                ? <PersonalitiesChooser />
+                : <ActionChooser />
             }
           </MiddleCenterPane>
           <MiddleRightPane>
