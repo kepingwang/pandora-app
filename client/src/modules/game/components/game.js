@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { List, Map } from 'immutable';
+import { List, Map, fromJS } from 'immutable';
 import NavBar from '../../common/nav-bar';
 import GoalAndStory from './goal-and-story';
 import CharacterIntro from './character-intro';
-import PersonalitiesView from './personalities-view';
+import AttrView from './attr-view';
 import Stats from './stats';
 import Event from './event';
 import OtherCharacters from './other-characters';
-import PersonalitiesChooser from '../personalities-chooser';
+import AttrChooser from '../attr-chooser';
 import ActionChooser from '../action-chooser';
 
 const Wrapper = styled.div`
@@ -61,9 +61,42 @@ const BottomRightPane = styled.div`
 const goal = 'Be a good programmer';
 const story = 'I grew up in China...';
 const characterIntro = 'Programmer';
-const emotions = List(['happy', 'sad', 'happier']);
-const beliefs = List(['nationalism', 'socialism', 'science']);
-const personalities = List(['brave', 'cautious', 'stupid']);
+const emotions = fromJS([
+  {
+    name: 'happy',
+    intensity: 1,
+  }, {
+    name: 'sad',
+    intensity: 2,
+  }, {
+    name: 'happier',
+    intensity: 1,
+  },
+]);
+const beliefs = fromJS([
+  {
+    name: 'nationalism',
+    intensity: 1,
+  }, {
+    name: 'socialism',
+    intensity: 1,
+  }, {
+    name: 'science',
+    intensity: 3,
+  },
+]);
+const personalities = fromJS([
+  {
+    name: 'brave',
+    intensity: 1,
+  }, {
+    name: 'cautious',
+    intensity: 2,
+  }, {
+    name: 'stupid',
+    intensity: 1,
+  },
+]);
 
 const statsDefault = Map({
   tension: 20,
@@ -107,7 +140,7 @@ class Game extends Component {
           <MiddleCenterPane>
             {
               status === 'personalities'
-                ? <PersonalitiesChooser />
+                ? <AttrChooser />
                 : <ActionChooser />
             }
           </MiddleCenterPane>
@@ -123,7 +156,7 @@ class Game extends Component {
             <CharacterIntro name={characterName || 'Keping'} intro={characterIntro} />
           </BottomCenterPane>
           <BottomRightPane>
-            <PersonalitiesView {...{ emotions, beliefs, personalities }} />
+            <AttrView {...{ emotions, beliefs, personalities }} />
           </BottomRightPane>
         </BottomPane>
       </Wrapper>

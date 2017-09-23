@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { List, fromJS } from 'immutable';
 import SelectionItem from './selection-item';
+import AttrView from '../../components/attr-view';
+import buttonStyle from '../../../../styles/button-style';
 
 const Wrapper = styled.div`
   height: 100%;
   display: grid;
   grid-template-columns: 100px auto 160px;
   grid-template-rows: 60px 30px;
+  overflow: hidden;
 `;
 const TitleMain = styled.h2`
   grid-column: 1 / 4;
@@ -56,16 +59,32 @@ const SubmitItem = styled.div`
 const PointsItem = styled.div`
   grid-column: 3 / 4;
 `;
+const Button = styled.button`
+  ${() => buttonStyle}
+`;
+const ViewWrapper = styled.div`
+  padding: 30px;
+  height: 50%;
+`;
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const Text = styled.div`
+  text-align: center;
+  padding: 20px;
+`;
 
 const options = {
   emotions: List(['hello', 'what?', 'happy', 'sad', 'sasdf', 'abcvkljsdf', 'ablkv', 'asdnvlj', 'bvlkjewflkm', 'andsfb', 'kxcvjkls', 'xclkvn']),
   beliefs: List(['hellasd', 'what?', 'happy', 'sad', 'sasdf', 'abcvkljsdf', 'ablkv', 'asdnvlj', 'bvlkjewflkm', 'andsfb', 'kxcvjkls', 'xclkvn', 'aklcvjkljadf', 'acvlkajsdfklsdfio2ef', 'asdvolj']),
+  personalities: List(['hello', 'what?', 'happy', 'sad', 'sasdf', 'abcvkljsdf', 'ablkv', 'asdnvlj', 'bvlkjewflkm', 'andsfb', 'kxcvjkls', 'xclkvn']),
 };
 
 const TOTAL_INTENSITY_POINTS = 10;
 const MAX_INTENSITY = 3;
 
-class PersonalitiesChooser extends Component {
+class AttrChooser extends Component {
 
   constructor(props) {
     super(props);
@@ -94,6 +113,18 @@ class PersonalitiesChooser extends Component {
           }, {
             name: null,
             intensity: 0,
+          },
+        ],
+        personalities: [
+          {
+            name: 'hello',
+            intensity: 1,
+          }, {
+            name: 'what?',
+            intensity: 1,
+          }, {
+            name: 'sad',
+            intensity: 1,
           },
         ],
       }),
@@ -231,7 +262,39 @@ class PersonalitiesChooser extends Component {
     );
   }
 
+  allSelected() {
+    const attributes = this.state.attributes;
+    return attributes.get('emotions').every(item => (
+      item.has('name') && item.get('name') !== null
+    )) && attributes.get('beliefs').every(item => (
+      item.has('name') && item.get('name') !== null
+    ));
+  }
+
   render() {
+    const { ready, submitAttr, notReady } = this.props;
+
+    if (ready) {
+      const attrs = this.state.attributes;
+      return (
+        <ViewWrapper>
+          <AttrView
+            emotions={attrs.get('emotions')}
+            beliefs={attrs.get('beliefs')}
+            personalities={attrs.get('personalities')}
+          />
+          <Text>
+            Waiting for other players...
+          </Text>
+          <ButtonWrapper>
+            <Button onClick={notReady}>
+              Not Ready
+            </Button>
+          </ButtonWrapper>
+        </ViewWrapper>
+      );
+    }
+
     return (
       <Wrapper>
         <TitleMain>Personalities Chooser</TitleMain>
@@ -243,7 +306,17 @@ class PersonalitiesChooser extends Component {
         <TypeTitle>Beliefs</TypeTitle>
         {this.Options('beliefs')}
         {this.Selections('beliefs')}
-        <SubmitItem>Submit</SubmitItem>
+        <TypeTitle>Personalities</TypeTitle>
+        {this.Options('personalities')}
+        {this.Selections('personalities')}
+        <SubmitItem>
+          <Button
+            disabled={!this.allSelected()}
+            onClick={() => submitAttr(this.state.attributes)}
+          >
+            Submit
+          </Button>
+        </SubmitItem>
         <PointsItem>
           remaining points: {this.state.remainingPoints}
         </PointsItem>
@@ -252,4 +325,4 @@ class PersonalitiesChooser extends Component {
   }
 }
 
-export default PersonalitiesChooser;
+export default AttrChooser;

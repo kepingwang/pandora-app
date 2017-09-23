@@ -26,14 +26,33 @@ function leaveRoom(socket) {
 function actionReady(socket, { actionName, scope }) {
   const roomName = socket.user.roomName;
   rooms = rooms.updateIn([roomName, socket.id], user => (
-    user.merge({ actionName, scope })
+    user.merge({
+      action: {
+        name: actionName,
+        scope,
+      },
+    })
   ));
 }
 
 function actionNotReady(socket) {
   const roomName = socket.user.roomName;
   rooms = rooms.updateIn([roomName, socket.id], user => (
-    user.delete('actionName').delete('scope')
+    user.delete('action')
+  ));
+}
+
+function attrReady(socket, attr) {
+  const roomName = socket.user.roomName;
+  rooms = rooms.updateIn([roomName, socket.id], user => (
+    user.merge({ attr })
+  ));
+}
+
+function attrNotReady(socket) {
+  const roomName = socket.user.roomName;
+  rooms = rooms.updateIn([roomName, socket.id], user => (
+    user.delete('attr')
   ));
 }
 
@@ -55,13 +74,28 @@ const actionsAllReady = roomName =>
         return false;
       }
       return rooms.get(roomName).every(user => (
-        user.has('actionName')
+        user.has('action')
+      ));
+    })
+    .catch((err) => { if (err) log.error(err); });
+
+const attrAllReady = roomName =>
+  playersAllOnline(roomName)
+    .then((res) => {
+      if (!res) {
+        return false;
+      }
+      return rooms.get(roomName).every(user => (
+        user.has('attr')
       ));
     })
     .catch((err) => { if (err) log.error(err); });
 
 const submitActions = (roomName, io) =>
   io.to(roomName).emit('reset-action-chooser');
+
+const submitAttr = (roomName, io) =>
+  io.to(roomName).emit('reset-attr-chooser');
 
 function logRooms() {
   log.debug('rooms', rooms.toJS());
@@ -75,4 +109,8 @@ module.exports = {
   actionNotReady,
   actionsAllReady,
   submitActions,
+  attrReady,
+  attrNotReady,
+  attrAllReady,
+  submitAttr,
 };

@@ -54,8 +54,8 @@ io.on('connect', (socket) => {
     rooms.logRooms();
   });
 
-  socket.on('action-ready', async ({ actionName, scope }) => {
-    rooms.actionReady(socket, { actionName, scope });
+  socket.on('action-ready', async (action) => {
+    rooms.actionReady(socket, action);
     const roomName = socket.user.roomName;
     const allReady = await rooms.actionsAllReady(roomName);
     if (!allReady) { return; }
@@ -64,6 +64,18 @@ io.on('connect', (socket) => {
 
   socket.on('action-not-ready', () => {
     rooms.actionNotReady(socket);
+  });
+
+  socket.on('attr-ready', async (attr) => {
+    rooms.attrReady(socket, attr);
+    const roomName = socket.user.roomName;
+    const allReady = await rooms.attrAllReady(roomName);
+    if (!allReady) { return; }
+    rooms.submitAttr(roomName, io);
+  });
+
+  socket.on('attr-not-ready', () => {
+    rooms.attrNotReady(socket);
   });
 });
 

@@ -23,30 +23,48 @@ const Title = styled.div`
   height: 25%;
   text-align: center;
 `;
-const Item = styled.div`
+const ItemText = styled.div`
   font-size: 16px;
   height: 25%;
   text-align: center;
 `;
 
+const Item = ({ name, intensity }) => (
+  <ItemText>
+    {name} ({intensity})
+  </ItemText>
+);
+
 const PersonalitiesView = ({ emotions, beliefs, personalities }) => (
   <Wrapper>
     <Col1>
       <Title>Emotions</Title>
-      {emotions.map((value, idx) => (
-        <Item key={idx}>{value}</Item>
+      {emotions.map((item, idx) => (
+        <Item
+          key={idx}
+          name={item.get('name')}
+          intensity={item.get('intensity')}
+        />
       ))}
     </Col1>
     <Col2>
       <Title>Beliefs</Title>
-      {beliefs.map((value, idx) => (
-        <Item key={idx}>{value}</Item>
+      {beliefs.map((item, idx) => (
+        <Item
+          key={idx}
+          name={item.get('name')}
+          intensity={item.get('intensity')}
+        />
       ))}
     </Col2>
     <Col3>
       <Title>Personalities</Title>
-      {personalities.map((value, idx) => (
-        <Item key={idx}>{value}</Item>
+      {personalities.map((item, idx) => (
+        <Item
+          key={idx}
+          name={item.get('name')}
+          intensity={item.get('intensity')}
+        />
       ))}
     </Col3>
   </Wrapper>

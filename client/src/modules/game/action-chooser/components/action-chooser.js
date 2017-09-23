@@ -4,6 +4,7 @@ import { List } from 'immutable';
 import buttonStyle from '../../../../styles/button-style';
 
 const Wrapper = styled.div`
+  overflow: hidden;
 `;
 const Title = styled.h2`
   text-align: center;
@@ -62,7 +63,7 @@ const ActionChooser = ({ actionChosen, scope, ready,
         <SubmitItem>
           <Button onClick={notReady}>
             Not Ready
-            </Button>
+          </Button>
         </SubmitItem>
       </Wrapper>
     );
