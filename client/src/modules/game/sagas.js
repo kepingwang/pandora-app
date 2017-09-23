@@ -16,12 +16,12 @@ function* handleSyncGameInfo() {
 }
 
 function* handleSubmitAction(action) {
-  const characterName = yield select(getCharacterName);
-  const roomName = yield select(getRoomName);
-  const { actionName, scope } = action;
-  const res = yield call(requests.submitAction, { roomName, characterName, actionName, scope });
-  const body = yield res.json();
-  yield put(actions.syncGameInfo());
+  // const characterName = yield select(getCharacterName);
+  // const roomName = yield select(getRoomName);
+  // const { actionName, scope } = action;
+  // const res = yield call(requests.submitAction, { roomName, characterName, actionName, scope });
+  // const body = yield res.json();
+  // yield put(actions.syncGameInfo());
 }
 
 function* sagas() {

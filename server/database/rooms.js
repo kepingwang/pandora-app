@@ -1,4 +1,6 @@
+/* eslint no-console: 0 */
 const { fromJS, Map } = require('immutable');
+const db = require('./client');
 
 let rooms = fromJS({});
 
@@ -21,10 +23,56 @@ function leaveRoom(socket) {
   ));
 }
 
+function actionReady(socket, { actionName, scope }) {
+  const roomName = socket.user.roomName;
+  rooms = rooms.updateIn([roomName, socket.id], user => (
+    user.merge({ actionName, scope })
+  ));
+}
+
+function actionNotReady(socket) {
+  const roomName = socket.user.roomName;
+  rooms = rooms.updateIn([roomName, socket.id], user => (
+    user.delete('actionName').delete('scope')
+  ));
+}
+
+const playersAllOnline = roomName =>
+  db.get({
+    TableName: 'PandoraRooms',
+    Key: { roomName },
+  }).promise()
+    .then((data) => {
+      const characters = data.Item.characters;
+      return rooms.get(roomName).size === characters.length;
+    })
+    .catch((err) => { if (err) console.log(err); });
+
+const actionsAllReady = roomName =>
+  playersAllOnline(roomName)
+    .then((res) => {
+      if (!res) {
+        return false;
+      }
+      return rooms.get(roomName).every(user => (
+        user.has('actionName')
+      ));
+    })
+    .catch((err) => { if (err) console.log(err); });
+
+const submitActions = (roomName, io) =>
+  io.to(roomName).emit('reset-action-chooser');
+
 function logRooms() {
   console.log(rooms.toJS());
 }
 
 module.exports = {
-  joinRoom, logRooms, leaveRoom,
+  logRooms,
+  joinRoom,
+  leaveRoom,
+  actionReady,
+  actionNotReady,
+  actionsAllReady,
+  submitActions,
 };

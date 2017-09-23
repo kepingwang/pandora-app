@@ -15,6 +15,8 @@ const buttonStyle = css`
     box-shadow: none;
     border: 1px solid #777;
   }
+  cursor: ${props => (props.disabled ? 'default' : 'pointer')};
+  ${props => (props.disabled ? 'opacity: 0.65;' : '')}
 `;
 
 export default buttonStyle;

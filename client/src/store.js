@@ -7,6 +7,8 @@ import dashboardSagas from './modules/dashboard/sagas';
 import welcomeReducers from './modules/welcome/reducers';
 import gameReducers from './modules/game/reducers';
 import gameSagas from './modules/game/sagas';
+import actionChooserReducers from './modules/game/action-chooser/reducers';
+import actionChooserSagas from './modules/game/action-chooser/sagas';
 import masterReducers from './modules/master/reducers';
 import masterSagas from './modules/master/sagas';
 
@@ -15,6 +17,7 @@ const reducers = combineReducers({
   dashboard: dashboardReducers,
   welcome: welcomeReducers,
   game: gameReducers,
+  actionChooser: actionChooserReducers,
   master: masterReducers,
 });
 
@@ -31,6 +34,7 @@ const store = createStore(reducers, composeEnhancers(
 sagaMiddleware.run(appSagas);
 sagaMiddleware.run(dashboardSagas);
 sagaMiddleware.run(gameSagas);
+sagaMiddleware.run(actionChooserSagas);
 sagaMiddleware.run(masterSagas);
 
 export default store;

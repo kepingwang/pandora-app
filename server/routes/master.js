@@ -33,7 +33,7 @@ router.post('/api/master/update-game-status',
     }).promise()
       .then(() => {
         res.json({ message: 'Update success.' });
-        io.to(roomName).emit('updateStatus');
+        io.to(roomName).emit('update-status');
       })
       .catch((err) => { if (err) next(err); });
   });

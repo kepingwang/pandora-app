@@ -5,7 +5,7 @@ const db = require('../database/client');
 
 const fetchJwtSecret = require('../config/jwt-secret');
 const COOKIE_NAME = require('../config/cookie-name');
-const { joinRoom, leaveRoom, logRooms } = require('../database/rooms');
+const rooms = require('../database/rooms');
 
 const io = new SocketIO();
 
@@ -40,16 +40,29 @@ io.use((socket, next) => {
 
 io.on('connect', (socket) => {
   if (!socket.user.master) {
-    joinRoom(socket);
+    rooms.joinRoom(socket);
   }
   console.log('socket connected');
-  logRooms();
+  rooms.logRooms();
+
   socket.on('disconnect', () => {
     if (!socket.user.master) {
-      leaveRoom(socket);
+      rooms.leaveRoom(socket);
     }
     console.log('socket disconnected');
-    logRooms();
+    rooms.logRooms();
+  });
+
+  socket.on('action-ready', async ({ actionName, scope }) => {
+    rooms.actionReady(socket, { actionName, scope });
+    const roomName = socket.user.roomName;
+    const allReady = await rooms.actionsAllReady(roomName);
+    if (!allReady) { return; }
+    rooms.submitActions(roomName, io);
+  });
+
+  socket.on('action-not-ready', () => {
+    rooms.actionNotReady(socket);
   });
 });
 
