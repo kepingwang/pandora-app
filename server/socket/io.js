@@ -1,6 +1,7 @@
 const SocketIO = require('socket.io');
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
+const log = require('winston');
 const db = require('../database/client');
 
 const fetchJwtSecret = require('../config/jwt-secret');
@@ -42,14 +43,14 @@ io.on('connect', (socket) => {
   if (!socket.user.master) {
     rooms.joinRoom(socket);
   }
-  console.log('socket connected');
+  log.debug('socket connected');
   rooms.logRooms();
 
   socket.on('disconnect', () => {
     if (!socket.user.master) {
       rooms.leaveRoom(socket);
     }
-    console.log('socket disconnected');
+    log.debug('socket disconnected');
     rooms.logRooms();
   });
 

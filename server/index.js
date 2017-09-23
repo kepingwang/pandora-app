@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const http = require('http');
 
+require('./config/logging');
 const preprocessors = require('./routes/preprocess');
 const authRoutes = require('./routes/auth').router;
 const mainRoutes = require('./routes/main');

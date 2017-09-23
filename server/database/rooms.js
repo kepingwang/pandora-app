@@ -1,5 +1,5 @@
-/* eslint no-console: 0 */
 const { fromJS, Map } = require('immutable');
+const log = require('winston');
 const db = require('./client');
 
 let rooms = fromJS({});
@@ -46,7 +46,7 @@ const playersAllOnline = roomName =>
       const characters = data.Item.characters;
       return rooms.get(roomName).size === characters.length;
     })
-    .catch((err) => { if (err) console.log(err); });
+    .catch((err) => { if (err) log.error(err); });
 
 const actionsAllReady = roomName =>
   playersAllOnline(roomName)
@@ -58,13 +58,13 @@ const actionsAllReady = roomName =>
         user.has('actionName')
       ));
     })
-    .catch((err) => { if (err) console.log(err); });
+    .catch((err) => { if (err) log.error(err); });
 
 const submitActions = (roomName, io) =>
   io.to(roomName).emit('reset-action-chooser');
 
 function logRooms() {
-  console.log(rooms.toJS());
+  log.debug('rooms', rooms.toJS());
 }
 
 module.exports = {

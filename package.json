@@ -5,7 +5,7 @@
   "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/index.js",
+    "start": "NODE_ENV=prod node server/index.js",
     "dev": "PORT=3002 NODE_ENV=dev nodemon server/index.js"
   },
   "repository": {
@@ -31,7 +31,8 @@
     "method-override": "^2.3.9",
     "morgan": "^1.8.2",
     "socket.io": "^2.0.3",
-    "validator": "^8.2.0"
+    "validator": "^8.2.0",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
