@@ -19,19 +19,21 @@ const StatsPane = styled.div`
   width: 30%;
 `;
 
-const WorldStats = () => (
+const WorldInfo = ({ roomName, description, gameRound, gameStatus, globalStats }) => (
   <Wrapper>
     <EventPane>
-      Event: comfort woman come out
+      <div>gameRound: {gameRound}</div>
+      <div>gameStatus: {gameStatus}</div>
     </EventPane>
     <StatusPane>
-      Players Choosing Personalities...
+      <div>{roomName}</div>
+      <div>{description}</div>
     </StatusPane>
     <StatsPane>
-      <div>tensions: 10</div>
-      <div>violence: 20</div>
+      <div>tension: {globalStats.get('tension')}</div>
+      <div>violence: {globalStats.get('violence')}</div>
     </StatsPane>
   </Wrapper>
 );
 
-export default WorldStats;
+export default WorldInfo;

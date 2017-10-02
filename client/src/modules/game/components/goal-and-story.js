@@ -20,7 +20,7 @@ const GoalAndStory = ({ goal, story }) => (
       Goal: {goal}
     </GoalItem>
     <StoryItem>
-      Description: {story}
+      Story: {story}
     </StoryItem>
   </Wrapper>
 );

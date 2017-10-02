@@ -5,11 +5,6 @@ export const syncGameInfo = () => ({
 });
 
 export const SET_GAME_INFO = 'master/set-game-info';
-export const setGameInfo = ({ status }) => ({
-  type: SET_GAME_INFO, status,
-});
-
-export const UPDATE_GAME_STATUS = 'master/update-game-status';
-export const updateGameStatus = status => ({
-  type: UPDATE_GAME_STATUS, status,
+export const setGameInfo = gameInfo => ({
+  type: SET_GAME_INFO, gameInfo,
 });

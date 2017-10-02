@@ -1,14 +1,22 @@
-import { select, put, takeLatest } from 'redux-saga/effects';
+import { select, call, put, takeLatest } from 'redux-saga/effects';
 import * as actions from './actions';
+import * as requests from '../../../requests';
 import socket from '../../../socket';
 
-const getActionChosen = state => state.actionChooser.get('actionChosen');
-const getScope = state => state.actionChooser.get('scope');
+const getGameName = state => state.game.get('gameName');
+const getActionName = state => state.actionChooser.get('actionName');
+
+function* handleChooseAction(action) {
+  const gameName = yield select(getGameName);
+  const actionName = action.actionName;
+  const res = yield call(requests.getActionInfo, { gameName, actionName });
+  const body = yield res.json();
+  yield put(actions.setActionInfo(body));
+}
 
 function* handleSubmitAction() {
-  const actionName = yield select(getActionChosen);
-  const scope = yield select(getScope);
-  socket.emit('action-ready', { actionName, scope });
+  const actionName = yield select(getActionName);
+  socket.emit('action-ready', { actionName });
   yield put(actions.setReady(true));
 }
 
@@ -18,6 +26,7 @@ function* handleNotReady() {
 }
 
 function* sagas() {
+  yield takeLatest(actions.CHOOSE_ACTION, handleChooseAction);
   yield takeLatest(actions.SUBMIT_ACTION, handleSubmitAction);
   yield takeLatest(actions.NOT_READY, handleNotReady);
 }

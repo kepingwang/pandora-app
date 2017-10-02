@@ -5,12 +5,11 @@ export const syncGameInfo = () => ({
 });
 
 export const SET_GAME_INFO = 'game/set-game-info';
-export const setGameInfo = ({ status }) => ({
-  type: SET_GAME_INFO, status,
+export const setGameInfo = gameInfo => ({
+  type: SET_GAME_INFO, gameInfo,
 });
 
 export const SUBMIT_ACTION = 'action-chooser/submit-action';
 export const submitAction = ({ actionName, scope }) => ({
   type: SUBMIT_ACTION, actionName, scope,
 });
-

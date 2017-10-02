@@ -6,15 +6,18 @@ import * as appActions from '../app/actions';
 
 
 const mapStateToProps = state => ({
-  status: state.master.get('status'),
+  roomName: state.app.get('roomName'),
+  characters: state.master.get('characters'),
+  description: state.master.get('description'),
+  gameRound: state.master.get('gameRound'),
+  gameStatus: state.master.get('gameStatus'),
+  globalStats: state.master.get('globalStats'),
+  paused: state.master.get('paused'),
 });
 
 const mapDispatchToProps = dispatch => ({
   syncGameInfo: () => {
     dispatch(actions.syncGameInfo());
-  },
-  updateGameStatus: (status) => {
-    dispatch(actions.updateGameStatus(status));
   },
   exitRoom: () => {
     dispatch(appActions.exitRoom());

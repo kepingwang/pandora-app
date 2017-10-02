@@ -9,8 +9,8 @@ import gameReducers from './modules/game/reducers';
 import gameSagas from './modules/game/sagas';
 import actionChooserReducers from './modules/game/action-chooser/reducers';
 import actionChooserSagas from './modules/game/action-chooser/sagas';
-import attrChooserReducers from './modules/game/attr-chooser/reducers';
-import attrChooserSagas from './modules/game/attr-chooser/sagas';
+import attrsChooserReducers from './modules/game/attrs-chooser/reducers';
+import attrsChooserSagas from './modules/game/attrs-chooser/sagas';
 import masterReducers from './modules/master/reducers';
 import masterSagas from './modules/master/sagas';
 
@@ -20,7 +20,7 @@ const reducers = combineReducers({
   welcome: welcomeReducers,
   game: gameReducers,
   actionChooser: actionChooserReducers,
-  attrChooser: attrChooserReducers,
+  attrsChooser: attrsChooserReducers,
   master: masterReducers,
 });
 
@@ -38,7 +38,7 @@ sagaMiddleware.run(appSagas);
 sagaMiddleware.run(dashboardSagas);
 sagaMiddleware.run(gameSagas);
 sagaMiddleware.run(actionChooserSagas);
-sagaMiddleware.run(attrChooserSagas);
+sagaMiddleware.run(attrsChooserSagas);
 sagaMiddleware.run(masterSagas);
 
 export default store;

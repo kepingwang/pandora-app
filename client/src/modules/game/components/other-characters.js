@@ -6,7 +6,6 @@ const Wrapper = styled.div`
 `;
 const Title = styled.div`
   font-size: 18px;
-  color: #aaa;
   text-align: center;
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
@@ -22,7 +21,10 @@ const OtherCharacters = ({ characters }) => (
     <Title>Others</Title>
     {
       characters.map((character, idx) => (
-        <Item key={idx}>{character}</Item>
+        <Item key={idx}>
+          <div>{character.get('characterName')}</div>
+          <div>{character.get('description')}</div>
+        </Item>
       ))
     }
   </Wrapper>

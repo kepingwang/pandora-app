@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import NavBar from '../../common/nav-bar';
-import WorldStats from './world-stats';
-import CharacterStats from './character-stats';
+import WorldInfo from './world-info';
+import CharacterInfo from './character-info';
 import buttonStyle from '../../../styles/button-style';
 
 const Wrapper = styled.div`
@@ -14,7 +14,7 @@ const Content = styled.div`
 `;
 
 const TopPane = styled.div`
-  height: calc(100% - 250px);
+  height: calc(100% - 210px);
   min-height: 200px;
   border-bottom: 1px solid #aaa;
   display: flex;
@@ -25,7 +25,7 @@ const MiddlePane = styled.div`
   border-right: 0.5px solid #aaa;
 `;
 const BottomPane = styled.div`
-  height: 100px;
+  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,7 +34,6 @@ const BottomPane = styled.div`
 `;
 const Button = styled.button`
   ${() => buttonStyle}
-  margin: 20px;
 `;
 
 class Master extends Component {
@@ -44,7 +43,10 @@ class Master extends Component {
   }
 
   render() {
-    const { exitRoom, logout, status, updateGameStatus } = this.props;
+    const {
+      characters, roomName, description, gameRound, gameStatus, globalStats, paused,
+      exitRoom, logout,
+    } = this.props;
     return (
       <Wrapper>
         <NavBar
@@ -55,24 +57,19 @@ class Master extends Component {
         />
         <Content>
           <TopPane>
-            <CharacterStats />
-            <CharacterStats />
-            <CharacterStats />
-            <CharacterStats />
+            {characters.map((character, idx) => (
+              <CharacterInfo key={idx} character={character} />
+            ))}
           </TopPane>
           <MiddlePane>
-            <WorldStats />
+            <WorldInfo {...{ roomName, description, gameRound, gameStatus, globalStats }} />
           </MiddlePane>
           <BottomPane>
-            <div>status: {status}</div>
-            <Button>Stop</Button>
-            <Button>Resume</Button>
-            <Button onClick={() => updateGameStatus('actions')}>
-              Actions
-            </Button>
-            <Button onClick={() => updateGameStatus('personalities')}>
-              Personalities
-            </Button>
+            {
+              paused
+              ? <Button disabled>Resume</Button>
+              : <Button disabled>Pause</Button>
+            }
           </BottomPane>
         </Content>
       </Wrapper>

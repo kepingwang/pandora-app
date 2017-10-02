@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { List } from 'immutable';
 import buttonStyle from '../../../../styles/button-style';
 
 const Wrapper = styled.div`
@@ -13,6 +12,7 @@ const ActionsBox = styled.div`
   margin: 10px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 `;
 const ActionItem = styled.div`
   padding: 5px 8px;
@@ -29,10 +29,6 @@ const Description = styled.div`
   text-align: center;
   margin: 20px 10px;
 `;
-const ScopeChooser = styled.div`
-  display: flex;
-  justify-content: center;
-`;
 const SubmitItem = styled.div`
   display: flex;
   justify-content: center;
@@ -42,24 +38,20 @@ const Button = styled.button`
   ${() => buttonStyle}
 `;
 
-const actionOptions = List(['sleep', 'eat a good meal', 'watch TV', 'play computer games', 'surf the internet', 'chat with friends', 'play soccer', 'watch youtube videos']);
-
-const ActionChooser = ({ actionChosen, scope, ready,
-  chooseAction, chooseScope, submitAction, notReady }) => {
+const ActionChooser = ({ availableActions,
+  positiveCoins, neutralCoins, negativeCoins,
+  actionName, description, emotionType, scope, ready,
+  chooseAction, submitAction, notReady }) => {
   if (ready) {
     return (
       <Wrapper>
         <Title>Action Chooser</Title>
         <Description>
-          You have chosen to
-            <b> {actionChosen} </b>
-          with
-            <b> {scope} </b>
-          scope
-          </Description>
+          You have chosen {actionName}
+        </Description>
         <Description>
           Waiting for other players...
-          </Description>
+        </Description>
         <SubmitItem>
           <Button onClick={notReady}>
             Not Ready
@@ -69,50 +61,47 @@ const ActionChooser = ({ actionChosen, scope, ready,
     );
   }
 
-  let numCoins = 4;
-  if (scope === 'community') {
-    numCoins = 6;
-  } else if (scope === 'global') {
-    numCoins = 12;
-  }
-
-  let actionInfo = 'No action is chosen.';
-  if (actionChosen !== null) {
+  let actionInfo = 'No action is selected.';
+  let available = false;
+  if (actionName !== null) {
+    let numCoins = 0;
+    if (scope === 'personal') {
+      numCoins = 4;
+    } else if (scope === 'local') {
+      numCoins = 6;
+    } else if (scope === 'global') {
+      numCoins = 12;
+    }
+    if (emotionType === 'positive') {
+      available = (positiveCoins >= numCoins) || (neutralCoins >= numCoins);
+    } else {
+      available = (negativeCoins >= numCoins) || (neutralCoins >= numCoins);
+    }
     actionInfo = (
       <div>
-        <div>{`Action chosen: ${actionChosen}`}</div>
-        <ScopeChooser>
-          <ActionItem
-            selected={scope === 'private'}
-            onClick={() => chooseScope('private')}
-          >private</ActionItem>
-          <ActionItem
-            selected={scope === 'community'}
-            onClick={() => chooseScope('community')}
-          >community</ActionItem>
-          <ActionItem
-            selected={scope === 'global'}
-            onClick={() => chooseScope('global')}
-          >global</ActionItem>
-        </ScopeChooser>
-        <div>
-          {`cost ${numCoins} positive coins`}
-        </div>
+        <Description>{description}</Description>
+        <Description>
+          {`${emotionType} action of ${scope} scope (${numCoins} coins)`}
+        </Description>
+        {
+          available
+            ? null
+            : <Description>Insufficient Coins!</Description>
+        }
       </div >
     );
   }
-
 
   return (
     <Wrapper>
       <Title>Action Chooser</Title>
       <ActionsBox>
-        {actionOptions.map(action => (
+        {availableActions.map(action => (
           <ActionItem
             key={action}
-            selected={action === actionChosen}
-            onClick={action === actionChosen
-              ? () => chooseAction(null)
+            selected={action === actionName}
+            onClick={action === actionName
+              ? () => null
               : () => chooseAction(action)}
           >
             {action}
@@ -124,7 +113,7 @@ const ActionChooser = ({ actionChosen, scope, ready,
       </Description>
       <SubmitItem>
         <Button
-          disabled={actionChosen === null}
+          disabled={!actionName || !available}
           onClick={() => submitAction()}
         >
           Submit

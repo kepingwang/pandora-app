@@ -4,13 +4,13 @@ export const chooseAction = actionName => ({
   type: CHOOSE_ACTION, actionName,
 });
 
-export const CHOOSE_SCOPE = 'action-chooser/choose-scope';
-export const chooseScope = scope => ({
-  type: CHOOSE_SCOPE, scope,
+export const SET_ACTION_INFO = 'action-chooser/set-action-info';
+export const setActionInfo = actionInfo => ({
+  type: SET_ACTION_INFO, actionInfo,
 });
 
 export const SUBMIT_ACTION = 'action-chooser/submit-action';
-export const submitAction = () => ({
+export const submitAction = () => ({ // ready
   type: SUBMIT_ACTION,
 });
 

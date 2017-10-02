@@ -22,9 +22,9 @@ const Stats = ({ stats }) => (
     <Item>Influence: {stats.get('influence')}</Item>
     <Item>Well-Being: {stats.get('wellbeing')}</Item>
     <Spacing />
-    <Item>Positive Coins: {stats.get('coinsPositive')}</Item>
-    <Item>Neutral Coins: {stats.get('coinsNeutral')}</Item>
-    <Item>Negative Coins: {stats.get('coinsNegative')}</Item>
+    <Item>Positive Coins: {stats.get('positiveCoins')}</Item>
+    <Item>Neutral Coins: {stats.get('neutralCoins')}</Item>
+    <Item>Negative Coins: {stats.get('negativeCoins')}</Item>
   </Wrapper>
 );
 

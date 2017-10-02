@@ -9,17 +9,16 @@ const Wrapper = styled.div`
   overflow: hidden;
 `;
 const Col1 = styled.div`
-  width: 33%;
+  width: 33.3%;
 `;
 const Col2 = styled.div`
-  width: 33%;
+  width: 33.3%;
 `;
 const Col3 = styled.div`
-  width: 34%;
+  width: 33.4%;
 `;
 const Title = styled.div`
   font-size: 20px;
-  color: #aaa;
   height: 25%;
   text-align: center;
 `;
@@ -35,7 +34,7 @@ const Item = ({ name, intensity }) => (
   </ItemText>
 );
 
-const PersonalitiesView = ({ emotions, beliefs, personalities }) => (
+const AttrsView = ({ emotions, beliefs, personalities }) => (
   <Wrapper>
     <Col1>
       <Title>Emotions</Title>
@@ -70,5 +69,5 @@ const PersonalitiesView = ({ emotions, beliefs, personalities }) => (
   </Wrapper>
 );
 
-export default PersonalitiesView;
+export default AttrsView;
 

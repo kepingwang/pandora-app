@@ -5,9 +5,16 @@ import * as actions from './actions';
 import { exitRoom, logout } from '../app/actions';
 
 const mapStateToProps = state => ({
-  status: state.game.get('status'),
   characterName: state.app.get('characterName'),
+  description: state.game.get('description'),
   stats: state.game.get('stats'),
+  globalStats: state.game.get('globalStats'),
+  event: state.game.get('event'),
+  goal: state.game.get('goal'),
+  story: state.game.get('story'),
+  attrs: state.game.get('attrs'),
+  others: state.game.get('others'),
+  gameStatus: state.game.get('gameStatus'),
 });
 
 const mapDispatchToProps = dispatch => ({

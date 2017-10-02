@@ -16,7 +16,7 @@ const EventContent = styled.div`
 const Event = ({ event }) => (
   <Wrapper>
     <EventTitle>Event: {event.get('name')}</EventTitle>
-    <EventContent>{event.get('content')}</EventContent>
+    <EventContent>{event.get('description')}</EventContent>
   </Wrapper>
 );
 

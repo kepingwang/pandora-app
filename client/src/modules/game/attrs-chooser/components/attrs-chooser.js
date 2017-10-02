@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { List, fromJS } from 'immutable';
 import SelectionItem from './selection-item';
-import AttrView from '../../components/attr-view';
+import AttrsView from '../../components/attrs-view';
 import buttonStyle from '../../../../styles/button-style';
 
 const Wrapper = styled.div`
   height: 100%;
   display: grid;
-  grid-template-columns: 100px auto 160px;
+  grid-template-columns: 120px auto 180px;
   grid-template-rows: 60px 30px;
   overflow: hidden;
 `;
@@ -33,17 +32,18 @@ const TitleSelections = styled.h3`
 const TypeTitle = styled.div`
   grid-column: 1 / 2;
   padding: 5px;
+  padding-left: 12px;
   font-size: 18px;
-  color: #ccc;
 `;
 const Options = styled.div`
   grid-column: 2 / 3;
   display: flex;
   flex-wrap: wrap;
-  align-content: flex-start;
+  align-items: flex-start;
 `;
 const OptionItem = styled.div`
   display: inline-block;
+  margin: 3px;
   padding: 3px 5px;
   ${props => (props.selected ? 'background-color: #ccc;' : null)}
   cursor: pointer;
@@ -75,68 +75,18 @@ const Text = styled.div`
   padding: 20px;
 `;
 
-const options = {
-  emotions: List(['hello', 'what?', 'happy', 'sad', 'sasdf', 'abcvkljsdf', 'ablkv', 'asdnvlj', 'bvlkjewflkm', 'andsfb', 'kxcvjkls', 'xclkvn']),
-  beliefs: List(['hellasd', 'what?', 'happy', 'sad', 'sasdf', 'abcvkljsdf', 'ablkv', 'asdnvlj', 'bvlkjewflkm', 'andsfb', 'kxcvjkls', 'xclkvn', 'aklcvjkljadf', 'acvlkajsdfklsdfio2ef', 'asdvolj']),
-  personalities: List(['hello', 'what?', 'happy', 'sad', 'sasdf', 'abcvkljsdf', 'ablkv', 'asdnvlj', 'bvlkjewflkm', 'andsfb', 'kxcvjkls', 'xclkvn']),
-};
 
-const TOTAL_INTENSITY_POINTS = 10;
 const MAX_INTENSITY = 3;
 
-class AttrChooser extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      remainingPoints: TOTAL_INTENSITY_POINTS - 4,
-      attributes: fromJS({
-        emotions: [
-          {
-            name: 'hello',
-            intensity: 1,
-          }, {
-            name: 'what?',
-            intensity: 1,
-          }, {
-            name: null,
-            intensity: 0,
-          },
-        ],
-        beliefs: [
-          {
-            name: 'hellasd',
-            intensity: 1,
-          }, {
-            name: 'sad',
-            intensity: 1,
-          }, {
-            name: null,
-            intensity: 0,
-          },
-        ],
-        personalities: [
-          {
-            name: 'hello',
-            intensity: 1,
-          }, {
-            name: 'what?',
-            intensity: 1,
-          }, {
-            name: 'sad',
-            intensity: 1,
-          },
-        ],
-      }),
-    };
-  }
+class AttrsChooser extends Component {
 
   decrease(attrType, attrName) {
-    const nextState = Object.assign({}, this.state);
+    const { attrsChosen, remainingPoints, chooseAttrs, setRemainingPoints } = this.props;
 
-    const attrIdx = nextState.attributes.get(attrType)
+    const attrIdx = attrsChosen.get(attrType)
       .findIndex(attr => attr.get('name') === attrName);
-    nextState.attributes = nextState.attributes.updateIn(
+
+    const nextAttrsChosen = attrsChosen.updateIn(
       [attrType, attrIdx],
       (attr) => {
         if (attr.get('intensity') === 1) {
@@ -149,88 +99,88 @@ class AttrChooser extends Component {
       },
     );
 
-    nextState.remainingPoints += 1;
+    const nextRemainingPoints = remainingPoints + 1;
 
-    this.setState(nextState);
+    chooseAttrs(nextAttrsChosen);
+    setRemainingPoints(nextRemainingPoints);
   }
 
   increase(attrType, attrName) {
-    const nextState = Object.assign({}, this.state);
+    const { attrsChosen, remainingPoints, chooseAttrs, setRemainingPoints } = this.props;
 
-    const attrIdx = nextState.attributes.get(attrType)
+    const attrIdx = attrsChosen.get(attrType)
       .findIndex(attr => attr.get('name') === attrName);
-    nextState.attributes = nextState.attributes.updateIn(
+
+    const nextAttrsChosen = attrsChosen.updateIn(
       [attrType, attrIdx],
       attr => attr.update('intensity', intensity => intensity + 1),
     );
 
-    nextState.remainingPoints += -1;
+    const nextRemainingPoints = remainingPoints - 1;
 
-    this.setState(nextState);
+    chooseAttrs(nextAttrsChosen);
+    setRemainingPoints(nextRemainingPoints);
   }
 
   select(attrType, attrName) {
-    const nextState = Object.assign({}, this.state);
+    const { attrsChosen, remainingPoints, chooseAttrs, setRemainingPoints } = this.props;
 
-    let updateIdx = this.state.attributes.get(attrType)
+    let nextAttrsChosen = attrsChosen;
+    let nextRemainingPoints = remainingPoints;
+
+    let updateIdx = attrsChosen.get(attrType)
       .findIndex(item => item.get('name') === null);
+
     if (updateIdx === -1) {
       updateIdx = 0;
-      const originalAttr = nextState.attributes.getIn([attrType, updateIdx]);
-      nextState.attributes = nextState.attributes.mergeIn(
+      const attrReplaced = attrsChosen.getIn([attrType, updateIdx]);
+      nextAttrsChosen = attrsChosen.mergeIn(
         [attrType, updateIdx],
-        {
-          name: attrName,
-          intensity: 1,
-        },
+        { name: attrName, intensity: 1 },
       );
-      nextState.remainingPoints += originalAttr.get('intensity') - 1;
+      nextRemainingPoints += attrReplaced.get('intensity') - 1;
     } else {
-      if (nextState.remainingPoints === 0) {
-        return;
-      }
-      nextState.attributes = nextState.attributes.mergeIn(
+      if (remainingPoints === 0) { return; }
+      nextAttrsChosen = attrsChosen.mergeIn(
         [attrType, updateIdx],
-        {
-          name: attrName,
-          intensity: 1,
-        },
+        { name: attrName, intensity: 1 },
       );
-      nextState.remainingPoints += -1;
+      nextRemainingPoints += -1;
     }
 
-    this.setState(nextState);
+    chooseAttrs(nextAttrsChosen);
+    setRemainingPoints(nextRemainingPoints);
   }
 
   deselect(attrType, attrName) {
-    const nextState = Object.assign({}, this.state);
+    const { attrsChosen, remainingPoints, chooseAttrs, setRemainingPoints } = this.props;
 
-    const updateIdx = this.state.attributes.get(attrType)
+    const updateIdx = attrsChosen.get(attrType)
       .findIndex(item => item.get('name') === attrName);
 
-    nextState.attributes = nextState.attributes.mergeIn(
+    const nextAttrsChosen = attrsChosen.mergeIn(
       [attrType, updateIdx],
-      {
-        name: null,
-        intensity: 0,
-      },
+      { name: null, intensity: 0 },
     );
 
-    nextState.remainingPoints += this.state.attributes
-      .getIn([attrType, updateIdx, 'intensity']);
+    const nextRemainingPoints = remainingPoints
+      + attrsChosen.getIn([attrType, updateIdx, 'intensity']);
 
-    this.setState(nextState);
+    chooseAttrs(nextAttrsChosen);
+    setRemainingPoints(nextRemainingPoints);
   }
 
   Options(attrType) {
+    const { availableAttrs, attrsChosen } = this.props;
+
     return (
       <Options>
-        {options[attrType].map(attrName => (
+        {availableAttrs.get(attrType).map(attrName => (
           <OptionItem
             key={attrName}
-            selected={this.state.attributes.get(attrType)
+            selected={attrsChosen.get(attrType)
               .find(attr => attr.get('name') === attrName)}
-            onClick={this.state.attributes.get(attrType)
+            onClick={attrsChosen.get(attrType)
               .find(attr => attr.get('name') === attrName)
               ? (() => this.deselect(attrType, attrName))
               : (() => this.select(attrType, attrName))}
@@ -243,9 +193,11 @@ class AttrChooser extends Component {
   }
 
   Selections(attrType) {
+    const { attrsChosen, remainingPoints } = this.props;
+
     return (
       <Selections>
-        {this.state.attributes.get(attrType).map((attr, idx) => (
+        {attrsChosen.get(attrType).map((attr, idx) => (
           <SelectionItem
             key={idx}
             name={attr.get('name')}
@@ -255,7 +207,7 @@ class AttrChooser extends Component {
             decreaseDisabled={attr.get('name') === null}
             increaseDisabled={attr.get('name') === null
               || attr.get('intensity') === MAX_INTENSITY
-              || this.state.remainingPoints === 0}
+              || remainingPoints === 0}
           />
         ))}
       </Selections>
@@ -263,25 +215,27 @@ class AttrChooser extends Component {
   }
 
   allSelected() {
-    const attributes = this.state.attributes;
-    return attributes.get('emotions').every(item => (
+    const { attrsChosen } = this.props;
+
+    return attrsChosen.get('emotions').every(item => (
       item.has('name') && item.get('name') !== null
-    )) && attributes.get('beliefs').every(item => (
+    )) && attrsChosen.get('beliefs').every(item => (
+      item.has('name') && item.get('name') !== null
+    )) && attrsChosen.get('personalities').every(item => (
       item.has('name') && item.get('name') !== null
     ));
   }
 
   render() {
-    const { ready, submitAttr, notReady } = this.props;
+    const { attrsChosen, remainingPoints, ready, submitAttrs, notReady } = this.props;
 
     if (ready) {
-      const attrs = this.state.attributes;
       return (
         <ViewWrapper>
-          <AttrView
-            emotions={attrs.get('emotions')}
-            beliefs={attrs.get('beliefs')}
-            personalities={attrs.get('personalities')}
+          <AttrsView
+            emotions={attrsChosen.get('emotions')}
+            beliefs={attrsChosen.get('beliefs')}
+            personalities={attrsChosen.get('personalities')}
           />
           <Text>
             Waiting for other players...
@@ -312,17 +266,17 @@ class AttrChooser extends Component {
         <SubmitItem>
           <Button
             disabled={!this.allSelected()}
-            onClick={() => submitAttr(this.state.attributes)}
+            onClick={() => submitAttrs(attrsChosen)}
           >
             Submit
           </Button>
         </SubmitItem>
         <PointsItem>
-          remaining points: {this.state.remainingPoints}
+          remaining points: {remainingPoints}
         </PointsItem>
       </Wrapper>
     );
   }
 }
 
-export default AttrChooser;
+export default AttrsChooser;

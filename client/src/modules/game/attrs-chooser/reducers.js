@@ -2,11 +2,8 @@ import { fromJS } from 'immutable';
 import * as actions from './actions';
 
 const initialState = fromJS({
-  gameName: null,
-  description: null,
-  story: null,
-  goal: null,
-  attrs: {
+  remainingPoints: 10,
+  attrsChosen: {
     emotions: [
       { name: null, intensity: 0 },
       { name: null, intensity: 0 },
@@ -23,36 +20,21 @@ const initialState = fromJS({
       { name: null, intensity: 0 },
     ],
   },
-  stats: {
-    affluence: null,
-    influence: null,
-    wellbeing: null,
-    positiveCoins: null,
-    negativeCoins: null,
-    neutralCoins: null,
-  },
-  globalStats: {
-    tension: null,
-    violence: null,
-  },
-  event: {
-    name: null,
-    description: null,
-  },
-  gameStatus: 'choosing-attrs',
-  availableActions: [],
-  availableAttrs: {
-    emotions: [],
-    beliefs: [],
-    personalities: [],
-  },
-  others: [],
+  ready: false,
 });
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
-    case actions.SET_GAME_INFO:
-      return state.merge(action.gameInfo);
+    case actions.CHOOSE_ATTRS:
+      return state.merge({
+        attrsChosen: action.attrs,
+      });
+    case actions.SET_REMAINING_POINTS:
+      return state.set('remainingPoints', action.remainingPoints);
+    case actions.SET_READY:
+      return state.set('ready', action.value);
+    case actions.RESET:
+      return initialState;
     default:
       return state;
   }

@@ -4,9 +4,9 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   height: 100%;
 `;
-const NameText = styled.div`
+const NameText = styled.h1`
   text-align: center;
-  font-size: 18px;
+  margin: 0;
   padding: 30px 0;
 `;
 const IntroText = styled.div`
@@ -15,10 +15,10 @@ const IntroText = styled.div`
   padding: 20px 0;
 `;
 
-const CharacterIntro = ({ name, intro }) => (
+const CharacterIntro = ({ name, description }) => (
   <Wrapper>
     <NameText>{name}</NameText>
-    <IntroText>{intro}</IntroText>
+    <IntroText>{description}</IntroText>
   </Wrapper>
 );
 
