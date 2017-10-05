@@ -90,22 +90,29 @@ function clearRoomAttrs(roomName) {
 }
 
 async function submitActions(roomName, io) {
-  const actionsMap = rooms.get(roomName).reduce((map, user) => (
-    map.set(user.get('characterName'), user.get('action'))
+  const roomInfo = await da.getRoom(roomName);
+  const gameName = roomInfo.gameName;
+  const actions = await da.getGameActions(gameName);
+  const actionsMap = actions.reduce((map, action) => (
+    map.set(action.actionName, fromJS(action))
   ), Map());
 
-  await game.chooseActions(roomName, actionsMap);
+  const charActions = rooms.get(roomName).reduce((map, user) => (
+    map.set(user.get('characterName'), actionsMap.get(user.get('action')))
+  ), Map());
+
+  await game.chooseActions(roomName, charActions);
 
   clearRoomActions(roomName);
   io.to(roomName).emit('sync-game-info');
 }
 
 async function submitAttrs(roomName, io) {
-  const attrsMap = rooms.get(roomName).reduce((map, user) => (
+  const charAttrs = rooms.get(roomName).reduce((map, user) => (
     map.set(user.get('characterName'), user.get('attrs'))
   ), Map());
 
-  await game.chooseAttrs(roomName, attrsMap);
+  await game.chooseAttrs(roomName, charAttrs);
 
   await game.nextRound(roomName);
 

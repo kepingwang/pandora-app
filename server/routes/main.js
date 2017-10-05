@@ -20,7 +20,7 @@ router.post('/api/exit-room',
 router.post('/api/get-rooms',
   validateLogin,
   async (req, res) => {
-    const roomNames = await da.scanRoomNames();
+    const roomNames = await da.getRoomNames();
     return res.json(roomNames);
   });
 

@@ -64,6 +64,8 @@ class Game extends Component {
   }
 
   render() {
+    console.log(this.props.dispatch);
+
     const {
       characterName, description, goal, story,
       stats, globalStats, event, attrs, others, gameStatus,

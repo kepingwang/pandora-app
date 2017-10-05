@@ -32,15 +32,15 @@ async function getGameInfo(roomName, email) {
   };
 }
 
-async function chooseActions(roomName, actionsMap) {
+async function chooseActions(roomName, charActions) {
   let room = await da.getRoom(roomName);
   room = fromJS(room);
 
-  room = calculation.updateIndicatorsFromActions(room, actionsMap);
+  room = calculation.updateIndicatorsFromActions(room, charActions);
   room = room.update('characters', characters => (
     characters.map(character => (
       character.update('actions', actions => (
-        actions.push(actionsMap.get(character.get('characterName')))
+        actions.push(charActions.get(character.get('characterName')))
       ))
     ))
   ));
@@ -49,14 +49,14 @@ async function chooseActions(roomName, actionsMap) {
   await da.setRoom(room.toJS());
 }
 
-async function chooseAttrs(roomName, attrsMap) {
+async function chooseAttrs(roomName, charAttrs) {
   let room = await da.getRoom(roomName);
   room = fromJS(room);
 
   room = room.update('characters', characters => (
     characters.map(character => (
       character.merge({
-        attrs: attrsMap.get(character.get('characterName')),
+        attrs: charAttrs.get(character.get('characterName')),
       })
     ))
   ));

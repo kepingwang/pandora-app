@@ -71,7 +71,7 @@ async function setRoom(room) {
   }).promise();
 }
 
-async function scanRoomNames() {
+async function getRoomNames() {
   const data = await db.scan({
     TableName: 'PandoraRooms',
     ProjectionExpression: 'roomName',
@@ -115,16 +115,31 @@ async function getAction(gameName, actionName) {
   return data.Item;
 }
 
+async function getGameActions(gameName) {
+  const data = await db.query({
+    TableName: 'PandoraActions',
+    KeyConditionExpression: '#gn = :gn',
+    ExpressionAttributeNames: {
+      '#gn': 'gameName',
+    },
+    ExpressionAttributeValues: {
+      ':gn': gameName,
+    },
+  }).promise();
+  return data.Items;
+}
+
 module.exports = {
   hasUser,
   getUser,
   createUser,
   setUserRoom,
   getRoom,
-  scanRoomNames,
+  getRoomNames,
   setRoom,
   isRoomPaused,
   setRoomPaused,
   getGame,
   getAction,
+  getGameActions,
 };
