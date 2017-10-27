@@ -64,13 +64,27 @@ class Game extends Component {
   }
 
   render() {
-    console.log(this.props.dispatch);
-
     const {
       characterName, description, goal, story,
       stats, globalStats, event, attrs, others, gameStatus,
-      exitRoom, logout,
+      exitRoom, logout, gameInfoSynced,
     } = this.props;
+
+    if (!gameInfoSynced) {
+      return (
+        <Wrapper>
+          <TopPane>
+            <NavBar
+              buttons={[
+                { name: 'Dashboard', onClick: () => exitRoom() },
+                { name: 'Logout', onClick: () => logout() },
+              ]}
+            />
+          </TopPane>
+        </Wrapper>
+      );
+    }
+
     return (
       <Wrapper>
         <TopPane>

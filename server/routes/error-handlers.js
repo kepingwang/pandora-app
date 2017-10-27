@@ -1,4 +1,4 @@
-/* eslint no-unused-vars: 0 */
+/* eslint no-unused-vars: 0, no-console: 0 */
 const router = require('express').Router();
 
 // error-handling middleware functions have 4 arguments instead of 3.

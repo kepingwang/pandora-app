@@ -47,6 +47,7 @@ const initialState = fromJS({
     personalities: [],
   },
   others: [],
+  gameInfoSynced: false,
 });
 
 const reducers = (state = initialState, action) => {

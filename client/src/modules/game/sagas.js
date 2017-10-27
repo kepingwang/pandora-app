@@ -12,7 +12,9 @@ function* handleSyncGameInfo() {
   const body = yield res.json();
   yield put(attrsChooserActions.reset());
   yield put(actionChooserActions.reset());
-  yield put(actions.setGameInfo(body));
+  yield put(actions.setGameInfo(Object.assign(
+    {}, body, { gameInfoSynced: true }),
+  ));
 }
 
 function* sagas() {

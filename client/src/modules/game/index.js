@@ -15,6 +15,7 @@ const mapStateToProps = state => ({
   attrs: state.game.get('attrs'),
   others: state.game.get('others'),
   gameStatus: state.game.get('gameStatus'),
+  gameInfoSynced: state.game.get('gameInfoSynced'),
 });
 
 const mapDispatchToProps = dispatch => ({
