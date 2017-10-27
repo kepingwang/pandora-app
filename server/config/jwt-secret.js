@@ -9,8 +9,8 @@ const fetchJwtSecret = () =>
     }
     const s3 = new AWS.S3();
     return s3.getObject({
-      Bucket: 'secret.kepingwang.com',
-      Key: 'pandora-app/pandora-app-jwt-secret.txt',
+      Bucket: 'config.play-pandora.com',
+      Key: 'jwt-secret.txt',
     }).promise()
       .then((data) => {
         jwtSecret = data.Body.toString('utf-8');

@@ -3,6 +3,13 @@ const path = require('path');
 const express = require('express');
 const http = require('http');
 
+const AWS = require('aws-sdk');
+
+if (process.env.NODE_ENV === 'dev') { // setting AWS_PROFILE env variable doesn't work
+  const credentials = new AWS.SharedIniFileCredentials({ profile: 'pandora' });
+  AWS.config.credentials = credentials;
+}
+
 require('./config/logging');
 const preprocessors = require('./routes/preprocess');
 const authRoutes = require('./routes/auth').router;
