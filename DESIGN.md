@@ -14,4 +14,4 @@
 
 gameRound and gameStatus proceeds automatically when all players have chosen actions.
 
-Master can pause and resume a game.
+Master can pause and resume a game. 
