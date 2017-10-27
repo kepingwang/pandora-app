@@ -3,7 +3,7 @@ const db = require('../config/dynamo-client');
 
 async function hasUser(email) {
   const data = await db.get({
-    TableName: 'UserInfo',
+    TableName: 'PandoraUserInfo',
     Key: { email },
   }).promise();
   return Boolean(data.Item);
@@ -11,7 +11,7 @@ async function hasUser(email) {
 
 async function getUser(email) {
   const data = await db.get({
-    TableName: 'UserInfo',
+    TableName: 'PandoraUserInfo',
     Key: { email },
   }).promise();
   if (!data.Item) {
@@ -22,7 +22,7 @@ async function getUser(email) {
 
 async function createUser(email, hashedPassword, username) {
   return db.put({
-    TableName: 'UserInfo',
+    TableName: 'PandoraUserInfo',
     Item: { email, hashedPassword, username },
   }).promise();
 }
@@ -30,7 +30,7 @@ async function createUser(email, hashedPassword, username) {
 async function setUserRoom(email, roomName, characterName) {
   if (!roomName) {
     return db.update({
-      TableName: 'UserInfo',
+      TableName: 'PandoraUserInfo',
       Key: { email },
       UpdateExpression: 'REMOVE roomName, characterName',
     }).promise();
@@ -46,7 +46,7 @@ async function setUserRoom(email, roomName, characterName) {
     vals = { ':r': roomName, ':c': characterName };
   }
   return db.update({
-    TableName: 'UserInfo',
+    TableName: 'PandoraUserInfo',
     Key: { email },
     UpdateExpression: exp,
     ExpressionAttributeValues: vals,
